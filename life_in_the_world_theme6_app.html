@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Life in the World – English App</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+    min-height: 100vh;
+    color: #fff;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background-image:
+      radial-gradient(1px 1px at 7% 10%, rgba(255,255,255,0.7) 0%, transparent 100%),
+      radial-gradient(1px 1px at 20% 32%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 41% 7%, rgba(255,255,255,0.8) 0%, transparent 100%),
+      radial-gradient(1px 1px at 67% 22%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 88% 55%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 94% 15%, rgba(255,255,255,0.7) 0%, transparent 100%),
+      radial-gradient(1px 1px at 32% 65%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 56% 80%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 14% 85%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 78% 70%, rgba(255,255,255,0.4) 0%, transparent 100%);
+    pointer-events: none; z-index: 0;
+  }
+  .container { max-width: 800px; margin: 0 auto; padding: 18px 14px 60px; position: relative; z-index: 1; }
+
+  .header { text-align: center; padding: 24px 0 16px; }
+  .header .icon-row { font-size: 32px; margin-bottom: 8px; letter-spacing: 5px; }
+  .header h1 {
+    font-size: clamp(19px, 5vw, 28px); font-weight: 800;
+    background: linear-gradient(135deg, #f6d365, #fda085, #f093fb);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 4px;
+  }
+  .header p { font-size: 13px; color: #fda085; }
+
+  .nav { display: flex; gap: 6px; justify-content: center; margin: 18px 0; flex-wrap: wrap; }
+  .nav-btn { padding: 8px 15px; border-radius: 50px; border: 2px solid rgba(255,255,255,0.18); background: rgba(255,255,255,0.07); color: #cbd5e1; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .nav-btn:hover { background: rgba(255,255,255,0.14); color: #fff; }
+  .nav-btn.active { background: linear-gradient(135deg, #f6d365, #fda085); border-color: transparent; color: #1a1a1a; box-shadow: 0 4px 15px rgba(246,211,101,0.35); }
+
+  .page { display: none; } .page.active { display: block; }
+
+  .card { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; padding: 18px; margin-bottom: 14px; backdrop-filter: blur(8px); }
+  .card h2 { font-size: 16px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 7px; }
+  .card h3 { font-size: 13px; font-weight: 700; color: #fcd34d; margin: 12px 0 7px; }
+  .card p { font-size: 13px; line-height: 1.7; color: #e2e8f0; }
+  .rule-box { background: rgba(253,168,133,0.12); border: 1px solid rgba(253,168,133,0.3); border-radius: 10px; padding: 10px 13px; margin: 7px 0; font-size: 13px; color: #fde68a; }
+  .example { background: rgba(240,147,251,0.1); border-left: 3px solid #f093fb; border-radius: 0 8px 8px 0; padding: 8px 12px; margin: 5px 0; font-size: 13px; color: #f5d0fe; font-style: italic; }
+  .tag { display: inline-block; background: rgba(246,211,101,0.2); border: 1px solid rgba(246,211,101,0.4); border-radius: 6px; padding: 2px 9px; font-size: 11px; font-weight: 700; color: #fde68a; margin: 2px; }
+  .tag.pink { background: rgba(240,147,251,0.2); border-color: rgba(240,147,251,0.4); color: #f5d0fe; }
+  .tag.green { background: rgba(52,211,153,0.2); border-color: rgba(52,211,153,0.4); color: #a7f3d0; }
+  .tag.blue { background: rgba(125,211,252,0.2); border-color: rgba(125,211,252,0.4); color: #bae6fd; }
+
+  .section-title { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #fda085; margin-bottom: 13px; display: flex; align-items: center; gap: 7px; }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: rgba(253,160,133,0.2); }
+
+  .score-bar { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .score-val { font-size: 21px; font-weight: 800; background: linear-gradient(135deg, #f6d365, #fda085); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .progress-bar { height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; margin-top: 4px; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, #f6d365, #f093fb); border-radius: 3px; transition: width 0.4s; }
+
+  .question-card { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; padding: 20px; margin-bottom: 14px; backdrop-filter: blur(8px); }
+  .question-num { font-size: 11px; font-weight: 700; letter-spacing: 1px; color: #fda085; text-transform: uppercase; margin-bottom: 8px; }
+  .question-text { font-size: clamp(14px, 3vw, 18px); font-weight: 600; line-height: 1.5; margin-bottom: 16px; }
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  @media (max-width: 460px) { .options { grid-template-columns: 1fr; } }
+  .option-btn { padding: 11px 13px; border-radius: 11px; border: 2px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.06); color: #e2e8f0; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; text-align: left; line-height: 1.4; }
+  .option-btn:hover:not(:disabled) { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.28); transform: translateY(-2px); }
+  .option-btn.correct { background: rgba(52,211,153,0.25); border-color: #34d399; color: #a7f3d0; }
+  .option-btn.wrong { background: rgba(239,68,68,0.25); border-color: #ef4444; color: #fca5a5; }
+
+  .blank-input { background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 6px 11px; color: #fff; font-size: 14px; font-weight: 600; width: 155px; outline: none; transition: border-color 0.2s; text-align: center; }
+  .blank-input:focus { border-color: #f6d365; }
+  .blank-input.correct { border-color: #34d399; background: rgba(52,211,153,0.15); }
+  .blank-input.wrong { border-color: #ef4444; background: rgba(239,68,68,0.15); }
+
+  .word-bank { display: flex; flex-wrap: wrap; gap: 6px; margin: 11px 0; min-height: 44px; padding: 9px; background: rgba(0,0,0,0.2); border-radius: 10px; border: 1px dashed rgba(255,255,255,0.15); }
+  .word-chip { padding: 5px 12px; background: linear-gradient(135deg, rgba(246,211,101,0.35), rgba(253,168,133,0.35)); border: 1px solid rgba(253,168,133,0.45); border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; color: #fef9c3; }
+  .word-chip:hover { transform: scale(1.06); background: linear-gradient(135deg, rgba(246,211,101,0.55), rgba(253,168,133,0.55)); }
+  .word-chip.placed { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.1); color: #64748b; }
+  .sentence-area { display: flex; flex-wrap: wrap; gap: 6px; min-height: 50px; padding: 10px; background: rgba(255,255,255,0.04); border-radius: 10px; border: 2px dashed rgba(246,211,101,0.3); align-items: center; }
+  .placed-chip { padding: 5px 12px; background: rgba(246,211,101,0.2); border: 1px solid rgba(246,211,101,0.4); border-radius: 20px; font-size: 12px; font-weight: 600; color: #fde68a; cursor: pointer; transition: all 0.2s; }
+  .placed-chip:hover { background: rgba(239,68,68,0.2); border-color: #ef4444; color: #fca5a5; }
+
+  .feedback { display: none; border-radius: 10px; padding: 10px 14px; font-size: 13px; font-weight: 600; margin: 10px 0; text-align: center; }
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: rgba(52,211,153,0.2); border: 1px solid #34d399; color: #a7f3d0; }
+  .feedback.wrong-fb { background: rgba(239,68,68,0.2); border: 1px solid #ef4444; color: #fca5a5; }
+
+  .btn { display: inline-block; padding: 11px 24px; border-radius: 50px; border: none; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s; text-align: center; }
+  .btn-primary { background: linear-gradient(135deg, #f6d365, #fda085); color: #1a1a1a; box-shadow: 0 4px 15px rgba(246,211,101,0.3); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(246,211,101,0.4); }
+  .btn-success { background: linear-gradient(135deg, #34d399, #059669); color: #fff; box-shadow: 0 4px 15px rgba(52,211,153,0.3); }
+  .btn-success:hover { transform: translateY(-2px); }
+
+  .results-screen { text-align: center; padding: 26px 0; }
+  .results-emoji { font-size: 64px; margin-bottom: 12px; }
+  .results-score { font-size: 48px; font-weight: 900; background: linear-gradient(135deg, #f6d365, #fda085); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 6px; }
+  .results-msg { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .results-sub { font-size: 13px; color: #94a3b8; margin-bottom: 24px; }
+
+  .inner-tabs { display: flex; gap: 4px; margin-bottom: 16px; background: rgba(0,0,0,0.2); border-radius: 12px; padding: 3px; }
+  .inner-tab { flex: 1; padding: 8px; border-radius: 9px; border: none; background: transparent; color: #94a3b8; font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.2s; text-align: center; }
+  .inner-tab.active { background: rgba(246,211,101,0.35); color: #fff; }
+  .inner-page { display: none; } .inner-page.active { display: block; }
+
+  .vocab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 7px; margin-top: 9px; }
+  .vocab-item { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 8px 10px; text-align: center; cursor: pointer; transition: all 0.15s; }
+  .vocab-item:hover { background: rgba(246,211,101,0.12); border-color: rgba(246,211,101,0.3); }
+  .vocab-en { font-size: 12px; font-weight: 700; color: #e2e8f0; }
+  .vocab-tr { font-size: 11px; color: #fda085; margin-top: 2px; }
+
+  /* Quantifier drag game */
+  .quant-game { margin-top: 10px; }
+  .quant-zones { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .quant-zone { background: rgba(0,0,0,0.25); border: 2px dashed rgba(255,255,255,0.2); border-radius: 12px; padding: 12px; min-height: 80px; }
+  .quant-zone h4 { font-size: 13px; font-weight: 700; color: #f6d365; margin-bottom: 8px; text-align: center; }
+  .quant-words { display: flex; flex-wrap: wrap; gap: 5px; }
+  .food-chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 10px; }
+  .food-chip { padding: 5px 11px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .food-chip.countable { background: rgba(52,211,153,0.25); border: 1px solid rgba(52,211,153,0.4); color: #a7f3d0; }
+  .food-chip.uncountable { background: rgba(246,211,101,0.2); border: 1px solid rgba(246,211,101,0.35); color: #fde68a; }
+  .food-chip.neutral { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #e2e8f0; }
+
+  .hidden { display: none; }
+  .verb-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+  .verb-table th { background: rgba(246,211,101,0.2); padding: 7px 10px; font-size: 12px; color: #fde68a; text-align: left; }
+  .verb-table td { padding: 6px 10px; font-size: 12px; color: #e2e8f0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .verb-table tr:hover td { background: rgba(255,255,255,0.04); }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="icon-row">🌍🍕🗺️👨‍🍳🍣</div>
+    <h1>Life in the World</h1>
+    <p>5th Grade English – Theme 6 · Level A1/A2</p>
+  </div>
+
+  <nav class="nav">
+    <button class="nav-btn active" onclick="showPage('learn')">🧠 Learn</button>
+    <button class="nav-btn" onclick="showPage('practice')">🎮 Practice</button>
+    <button class="nav-btn" onclick="showPage('game')">🏆 Game</button>
+    <button class="nav-btn" onclick="showPage('vocab')">📖 Words</button>
+    <button class="nav-btn" onclick="showPage('quantifiers')">⚖️ Quantifiers</button>
+  </nav>
+
+  <!-- ===================== LEARN ===================== -->
+  <div class="page active" id="page-learn">
+    <div class="section-title">Grammar Topics</div>
+
+    <!-- Present Perfect -->
+    <div class="card">
+      <h2>⭐ Present Perfect Tense (Have / Has + V3)</h2>
+      <p>We use Present Perfect to talk about <b>life experiences</b>. We do NOT say when it happened.</p>
+      <h3>Positive (+)</h3>
+      <div class="rule-box">
+        <span class="tag">I / You / We / They → have + V3</span>
+        <span class="tag">He / She / It → has + V3</span>
+      </div>
+      <div class="example">✈️ I <b>have been</b> to Italy. | She <b>has visited</b> many countries.</div>
+      <h3>Negative (–)</h3>
+      <div class="rule-box">
+        <span class="tag pink">haven't + V3</span> <span class="tag pink">hasn't + V3</span>
+      </div>
+      <div class="example">❌ I <b>have never tried</b> chocolate pizza. | He <b>hasn't been</b> abroad.</div>
+      <h3>Question (?)</h3>
+      <div class="rule-box"><b>Have / Has + subject + V3?</b></div>
+      <div class="example">❓ <b>Have you ever been</b> to Spain? | <b>Has she visited</b> Japan?</div>
+      <h3>⏰ Time Expressions</h3>
+      <div class="rule-box">
+        <span class="tag green">ever</span> → in questions &nbsp;
+        <span class="tag green">never</span> → negative<br><br>
+        <span class="tag blue">already</span> = before now &nbsp;
+        <span class="tag blue">just</span> = a short time ago<br><br>
+        <span class="tag">yet</span> = until now (questions & negatives)<br><br>
+        <span class="tag pink">for</span> + period of time (for 2 years)<br>
+        <span class="tag pink">since</span> + starting point (since 2022)
+      </div>
+      <div class="example">📘 I <b>have already</b> finished my homework.</div>
+      <div class="example">📘 She <b>has just</b> arrived home.</div>
+      <div class="example">📘 Have you eaten breakfast <b>yet</b>?</div>
+      <div class="example">📘 I <b>have lived</b> here <b>for</b> two years.</div>
+      <div class="example">📘 She <b>has studied</b> English <b>since</b> 2022.</div>
+    </div>
+
+    <!-- Quantifiers -->
+    <div class="card">
+      <h2>⚖️ Quantifiers (Miktar İfadeleri)</h2>
+      <p style="margin-bottom: 8px;">First, know if a noun is <b>Countable</b> (sayılabilir) or <b>Uncountable</b> (sayılamaz)!</p>
+      <div class="rule-box">
+        <b>Countable:</b> apple, egg, carrot, burger, tomato<br>
+        <b>Uncountable:</b> sugar, flour, meat, water, salt, milk, bread, rice, cheese
+      </div>
+      <h3>HOW MANY / HOW MUCH</h3>
+      <div class="rule-box">
+        <span class="tag green">How many</span> + countable → How many apples?<br>
+        <span class="tag pink">How much</span> + uncountable → How much milk?
+      </div>
+      <h3>SOME / ANY</h3>
+      <div class="rule-box">
+        <span class="tag blue">some</span> → positive sentences & offers (I want <b>some</b> eggs.)<br>
+        <span class="tag">any</span> → questions & negatives (Is there <b>any</b> milk?)
+      </div>
+      <h3>A FEW / A LITTLE</h3>
+      <div class="rule-box">
+        <span class="tag green">a few</span> + countable plural (a few pears)<br>
+        <span class="tag pink">a little</span> + uncountable (a little bread)
+      </div>
+      <h3>MANY / MUCH / A LOT OF</h3>
+      <div class="rule-box">
+        <span class="tag green">many</span> + countable | <span class="tag pink">much</span> + uncountable<br>
+        <span class="tag blue">a lot of</span> + both (a lot of milk / a lot of eggs)
+      </div>
+      <h3>TOO MANY / TOO MUCH / ENOUGH</h3>
+      <div class="rule-box">
+        <span class="tag">too many</span> + countable = too many cars<br>
+        <span class="tag">too much</span> + uncountable = too much sugar<br>
+        <span class="tag pink">enough</span> = yeterli (enough money / enough chairs)
+      </div>
+      <h3>BOTH / EITHER / NEITHER</h3>
+      <div class="rule-box">
+        <span class="tag green">both … and</span> = her ikisi de (Both water <b>and</b> milk are good.)<br>
+        <span class="tag blue">either … or</span> = ya … ya (Either water <b>or</b> juice.)<br>
+        <span class="tag pink">neither … nor</span> = ne … ne (Neither coffee <b>nor</b> tea.)
+      </div>
+    </div>
+
+    <!-- V3 Table -->
+    <div class="card">
+      <h2>📚 Past Participle (V3) – Key Verbs</h2>
+      <table class="verb-table">
+        <tr><th>Verb (V1)</th><th>V3</th><th>Verb (V1)</th><th>V3</th></tr>
+        <tr><td>go</td><td>gone</td><td>eat</td><td>eaten</td></tr>
+        <tr><td>be</td><td>been</td><td>drink</td><td>drunk</td></tr>
+        <tr><td>visit</td><td>visited</td><td>try</td><td>tried</td></tr>
+        <tr><td>see</td><td>seen</td><td>finish</td><td>finished</td></tr>
+        <tr><td>come</td><td>come</td><td>study</td><td>studied</td></tr>
+        <tr><td>have</td><td>had</td><td>learn</td><td>learned</td></tr>
+        <tr><td>travel</td><td>travelled</td><td>live</td><td>lived</td></tr>
+        <tr><td>buy</td><td>bought</td><td>arrive</td><td>arrived</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===================== PRACTICE ===================== -->
+  <div class="page" id="page-practice">
+    <div class="inner-tabs">
+      <button class="inner-tab active" onclick="showInner('multiple')">🔤 Multiple Choice</button>
+      <button class="inner-tab" onclick="showInner('fill')">✏️ Fill Blanks</button>
+      <button class="inner-tab" onclick="showInner('builder')">🧩 Build Sentence</button>
+    </div>
+    <div class="inner-page active" id="inner-multiple"><div id="mc-container"></div></div>
+    <div class="inner-page" id="inner-fill"><div id="fill-container"></div></div>
+    <div class="inner-page" id="inner-builder"><div id="builder-container"></div></div>
+  </div>
+
+  <!-- ===================== GAME ===================== -->
+  <div class="page" id="page-game">
+    <div id="game-start" class="question-card" style="text-align:center; padding: 36px 20px;">
+      <div style="font-size: 56px; margin-bottom: 12px;">🏆</div>
+      <h2 style="font-size: 21px; margin-bottom: 8px; justify-content: center;">Game Mode!</h2>
+      <p style="color: #94a3b8; margin-bottom: 20px;">Answer 15 questions. Earn 10 points each!</p>
+      <button class="btn btn-success" onclick="startGame()" style="font-size: 16px; padding: 14px 36px;">Start Game 🌍</button>
+    </div>
+    <div id="game-play" class="hidden">
+      <div class="score-bar">
+        <div><div style="font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px;">Score</div><div class="score-val" id="live-score">0</div></div>
+        <div style="text-align:center;"><div style="font-size: 11px; color: #94a3b8;">Question</div><div style="font-size: 16px; font-weight: 700;" id="q-counter">1/15</div></div>
+        <div style="text-align:right;"><div style="font-size: 11px; color: #94a3b8; margin-bottom: 4px;">Progress</div><div class="progress-bar" style="width: 100px;"><div class="progress-fill" id="progress-fill" style="width: 0%"></div></div></div>
+      </div>
+      <div id="game-question-area"></div>
+    </div>
+    <div id="game-results" class="hidden">
+      <div class="question-card results-screen">
+        <div class="results-emoji" id="res-emoji">🎉</div>
+        <div class="results-score" id="res-score">0 pts</div>
+        <div class="results-msg" id="res-msg">Great Job!</div>
+        <div class="results-sub" id="res-sub">You got 0 out of 15 correct!</div>
+        <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+          <button class="btn btn-success" onclick="startGame()">Play Again 🔄</button>
+          <button class="btn btn-primary" onclick="showPage('learn')">Review 🧠</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== VOCAB ===================== -->
+  <div class="page" id="page-vocab">
+    <div class="section-title">Theme 6 Key Vocabulary</div>
+    <div class="card"><h2>🌍 Countries & Continents</h2><div class="vocab-grid" id="vocab-countries"></div></div>
+    <div class="card"><h2>🍕 World Foods</h2><div class="vocab-grid" id="vocab-foods"></div></div>
+    <div class="card"><h2>👨‍🍳 Cooking Verbs</h2><div class="vocab-grid" id="vocab-cooking"></div></div>
+    <div class="card"><h2>🌐 Culture & Travel</h2><div class="vocab-grid" id="vocab-culture"></div></div>
+  </div>
+
+  <!-- ===================== QUANTIFIERS ===================== -->
+  <div class="page" id="page-quantifiers">
+    <div class="section-title">Countable vs Uncountable</div>
+    <div class="card">
+      <h2>🥗 Sort the Food!</h2>
+      <p style="font-size:13px; color:#94a3b8; margin-bottom:12px;">Tap each food to reveal if it's countable (C) or uncountable (U)!</p>
+      <div class="food-chips" id="food-sort-chips"></div>
+    </div>
+    <div class="card">
+      <h2>⚖️ Quantifier Quiz</h2>
+      <p style="font-size:13px; color:#94a3b8; margin-bottom:12px;">Choose the correct quantifier for each sentence.</p>
+      <div id="quant-quiz-container"></div>
+    </div>
+    <div class="card">
+      <h2>📝 Some / Any / Much / Many</h2>
+      <p style="font-size:13px; color:#94a3b8; margin-bottom:12px;">Fill in each blank with the correct word.</p>
+      <div id="quant-fill-container"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ===== NAVIGATION =====
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  event.target.classList.add('active');
+  if (id === 'practice') initPractice();
+  if (id === 'vocab') initVocab();
+  if (id === 'quantifiers') initQuantifiers();
+}
+function showInner(id) {
+  document.querySelectorAll('.inner-page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.inner-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('inner-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ===== ALL QUESTIONS =====
+const allQuestions = [
+  // Present Perfect - have/has
+  { type: 'mc', q: 'She ___ visited many countries around the world.', opts: ['have', 'has', 'is', 'was'], ans: 1, topic: '⭐ Present Perfect' },
+  { type: 'mc', q: 'I ___ never eaten sushi in my life.', opts: ['has', 'is', 'have', 'was'], ans: 2, topic: '⭐ Present Perfect' },
+  { type: 'mc', q: 'They ___ travelled to another country last year.', opts: ['have', 'has', 'had', 'were'], ans: 0, topic: '⭐ Present Perfect' },
+  { type: 'mc', q: 'Have you ___ been to a food festival?', opts: ['never', 'ever', 'yet', 'just'], ans: 1, topic: '⭐ Ever/Never' },
+  { type: 'mc', q: 'I have ___ finished my homework. (before now)', opts: ['yet', 'never', 'already', 'ever'], ans: 2, topic: '⭐ Already/Just' },
+  { type: 'mc', q: 'She has ___ arrived home. (a short time ago)', opts: ['already', 'yet', 'never', 'just'], ans: 3, topic: '⭐ Already/Just' },
+  { type: 'mc', q: "I haven't eaten breakfast ___ . (questions/negatives)", opts: ['ever', 'already', 'yet', 'never'], ans: 2, topic: '⭐ Yet' },
+  { type: 'mc', q: 'I have lived here ___ two years. (period of time)', opts: ['since', 'for', 'ago', 'from'], ans: 1, topic: '⭐ For/Since' },
+  { type: 'mc', q: 'She has studied English ___ 2022. (starting point)', opts: ['for', 'ago', 'since', 'from'], ans: 2, topic: '⭐ For/Since' },
+  // V3 forms
+  { type: 'mc', q: 'V3 of "go":', opts: ['goed', 'gone', 'went', 'going'], ans: 1, topic: '📚 V3 Forms' },
+  { type: 'mc', q: 'V3 of "eat":', opts: ['eated', 'ate', 'eaten', 'eating'], ans: 2, topic: '📚 V3 Forms' },
+  { type: 'mc', q: 'V3 of "see":', opts: ['sawed', 'saw', 'seen', 'seed'], ans: 2, topic: '📚 V3 Forms' },
+  // Quantifiers
+  { type: 'mc', q: '___ apples do you eat every day? (countable)', opts: ['How much', 'How many', 'How few', 'How little'], ans: 1, topic: '⚖️ Quantifiers' },
+  { type: 'mc', q: '___ water do you drink? (uncountable)', opts: ['How many', 'How few', 'How much', 'A few'], ans: 2, topic: '⚖️ Quantifiers' },
+  { type: 'mc', q: 'I want ___ eggs. (positive sentence)', opts: ['any', 'some', 'much', 'many'], ans: 1, topic: '⚖️ Some/Any' },
+  { type: 'mc', q: "I don't want ___ bread. (negative)", opts: ['some', 'a few', 'any', 'much'], ans: 2, topic: '⚖️ Some/Any' },
+  { type: 'mc', q: 'We need ___ cucumbers. (a small number)', opts: ['a little', 'much', 'a few', 'any'], ans: 2, topic: '⚖️ A few/A little' },
+  { type: 'mc', q: 'Add ___ oil to the mixture. (small amount, uncountable)', opts: ['a few', 'many', 'a little', 'some'], ans: 2, topic: '⚖️ A few/A little' },
+  { type: 'mc', q: 'There are ___ cars in the car park. It is crowded!', opts: ['too much', 'too many', 'enough', 'a little'], ans: 1, topic: '⚖️ Too many/much' },
+  { type: 'mc', q: 'Please buy ___ apples and cucumbers. (both items)', opts: ['either', 'neither', 'both', 'any'], ans: 2, topic: '⚖️ Both/Either/Neither' },
+];
+
+const fillQuestions = [
+  { sentence: 'She [has] visited Italy. (Present Perfect)', answer: 'has', hint: 'He/She/It → ?' },
+  { sentence: 'I [have] never eaten sushi.', answer: 'have', hint: 'I / You / We → ?' },
+  { sentence: 'Have you [ever] been to Spain?', answer: 'ever', hint: 'questions → ?' },
+  { sentence: 'She has [just] arrived home. (az önce)', answer: 'just', hint: 'a short time ago' },
+  { sentence: 'I have lived here [for] two years.', answer: 'for', hint: 'period of time' },
+  { sentence: 'She has studied [since] 2022.', answer: 'since', hint: 'starting point' },
+  { sentence: 'I want [some] eggs. (positive sentence)', answer: 'some', hint: 'some or any?' },
+  { sentence: 'Do you need [any] cucumbers? (question)', answer: 'any', hint: 'some or any?' },
+  { sentence: 'We need [a few] cucumbers. (az, sayılabilir)', answer: 'a few', hint: 'a few or a little?' },
+  { sentence: 'Add [a little] oil to the mixture. (az, sayılamaz)', answer: 'a little', hint: 'a few or a little?' },
+  { sentence: 'There are [too many] cars. It is crowded.', answer: 'too many', hint: 'too many / too much' },
+  { sentence: 'V3 of "go" is [gone].', answer: 'gone', hint: 'irregular verb' },
+];
+
+const builderQuestions = [
+  { words: ['been', 'I', 'have', 'to', 'Italy'], answer: 'I have been to Italy' },
+  { words: ['visited', 'She', 'has', 'countries', 'many'], answer: 'She has visited many countries' },
+  { words: ['you', 'ever', 'Have', 'Spain?', 'been', 'to'], answer: 'Have you ever been to Spain?' },
+  { words: ['never', 'I', 'have', 'sushi', 'eaten'], answer: 'I have never eaten sushi' },
+  { words: ['yet?', 'you', 'finished', 'Have', 'homework', 'your'], answer: 'Have you finished your homework yet?' },
+  { words: ['some', 'want', 'I', 'eggs'], answer: 'I want some eggs' },
+  { words: ['cucumbers', 'a', 'need', 'We', 'few'], answer: 'We need a few cucumbers' },
+];
+
+// ===== PRACTICE =====
+let practiceInited = false;
+function initPractice() {
+  if (practiceInited) return; practiceInited = true;
+  initMC(); initFill(); initBuilder();
+}
+function initMC() {
+  const c = document.getElementById('mc-container'); c.innerHTML = '';
+  allQuestions.forEach((q, i) => {
+    const div = document.createElement('div'); div.className = 'question-card';
+    div.innerHTML = `
+      <div class="question-num">${q.topic} · Q${i+1}/${allQuestions.length}</div>
+      <div class="question-text">${q.q}</div>
+      <div class="options" id="mc-opts-${i}">
+        ${q.opts.map((o, j) => `<button class="option-btn" onclick="checkMC(${i},${j})">${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="mc-fb-${i}"></div>`;
+    c.appendChild(div);
+  });
+}
+function checkMC(qi, sel) {
+  const q = allQuestions[qi];
+  const opts = document.querySelectorAll(`#mc-opts-${qi} .option-btn`);
+  opts.forEach(b => b.disabled = true);
+  opts[q.ans].classList.add('correct');
+  const fb = document.getElementById('mc-fb-' + qi);
+  if (sel === q.ans) { fb.textContent = '✅ Correct! Well done!'; fb.className = 'feedback show correct-fb'; }
+  else { opts[sel].classList.add('wrong'); fb.textContent = `❌ Answer: "${q.opts[q.ans]}"`; fb.className = 'feedback show wrong-fb'; }
+}
+function initFill() {
+  const c = document.getElementById('fill-container'); c.innerHTML = '';
+  fillQuestions.forEach((q, i) => {
+    const parts = q.sentence.replace(`[${q.answer}]`, '<BLANK>').split('<BLANK>');
+    const div = document.createElement('div'); div.className = 'question-card';
+    div.innerHTML = `
+      <div class="question-num">✏️ Fill in the blank · ${i+1}/${fillQuestions.length}</div>
+      <div style="font-size:15px;font-weight:600;line-height:2.2;margin-bottom:11px;">
+        ${parts[0]}<input class="blank-input" id="fill-inp-${i}" placeholder="?" autocomplete="off">${parts[1]||''}
+      </div>
+      <div style="color:#94a3b8;font-size:12px;margin-bottom:10px;">💡 Hint: ${q.hint}</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="checkFill(${i})">Check ✓</button>
+        <button class="btn" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#e2e8f0;" onclick="showFillAnswer(${i})">Show Answer 👁️</button>
+      </div>
+      <div class="feedback" id="fill-fb-${i}"></div>`;
+    c.appendChild(div);
+  });
+}
+function checkFill(i) {
+  const inp = document.getElementById('fill-inp-' + i);
+  const q = fillQuestions[i];
+  const val = inp.value.trim().toLowerCase();
+  const fb = document.getElementById('fill-fb-' + i);
+  if (val === q.answer.toLowerCase()) { inp.className = 'blank-input correct'; fb.textContent = '✅ Correct!'; fb.className = 'feedback show correct-fb'; }
+  else { inp.className = 'blank-input wrong'; fb.textContent = `❌ Starts with "${q.answer[0]}"...`; fb.className = 'feedback show wrong-fb'; }
+}
+function showFillAnswer(i) {
+  const inp = document.getElementById('fill-inp-' + i);
+  inp.value = fillQuestions[i].answer; inp.className = 'blank-input correct';
+  const fb = document.getElementById('fill-fb-' + i);
+  fb.textContent = `📖 Answer: "${fillQuestions[i].answer}"`; fb.className = 'feedback show correct-fb';
+}
+function initBuilder() {
+  const c = document.getElementById('builder-container'); c.innerHTML = '';
+  builderQuestions.forEach((q, i) => {
+    const shuffled = [...q.words].sort(() => Math.random() - 0.5);
+    const div = document.createElement('div'); div.className = 'question-card';
+    div.innerHTML = `
+      <div class="question-num">🧩 Sentence Builder · ${i+1}/${builderQuestions.length}</div>
+      <p style="color:#94a3b8;font-size:12px;margin-bottom:10px;">Tap words to build the sentence. Tap a placed word to remove it.</p>
+      <div class="sentence-area" id="sb-area-${i}"><span style="color:#475569;font-size:12px;" id="sb-ph-${i}">👆 Tap words below...</span></div>
+      <div class="word-bank" id="sb-bank-${i}">
+        ${shuffled.map((w, j) => `<div class="word-chip" id="sb-chip-${i}-${j}" onclick="placeWord(${i},'${w.replace(/'/g,"\\'")}',${j})">${w}</div>`).join('')}
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
+        <button class="btn btn-primary" onclick="checkBuilder(${i})">Check ✓</button>
+        <button class="btn" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#e2e8f0;" onclick="resetBuilder(${i})">Reset 🔄</button>
+      </div>
+      <div class="feedback" id="sb-fb-${i}"></div>`;
+    div.dataset.placed = JSON.stringify([]);
+    c.appendChild(div);
+  });
+}
+function placeWord(qi, word, chipIdx) {
+  const card = document.querySelector(`#builder-container .question-card:nth-child(${qi+1})`);
+  const placed = JSON.parse(card.dataset.placed || '[]');
+  const chip = document.getElementById(`sb-chip-${qi}-${chipIdx}`);
+  if (chip.classList.contains('placed')) return;
+  chip.classList.add('placed');
+  placed.push({ word, chipIdx });
+  card.dataset.placed = JSON.stringify(placed);
+  renderSB(qi, placed);
+}
+function renderSB(qi, placed) {
+  const area = document.getElementById('sb-area-' + qi);
+  const ph = document.getElementById('sb-ph-' + qi);
+  if (ph) ph.style.display = placed.length === 0 ? '' : 'none';
+  area.querySelectorAll('.placed-chip').forEach(c => c.remove());
+  placed.forEach((p, idx) => {
+    const span = document.createElement('span');
+    span.className = 'placed-chip'; span.textContent = p.word;
+    span.onclick = () => removeSBWord(qi, idx); area.appendChild(span);
+  });
+}
+function removeSBWord(qi, idx) {
+  const card = document.querySelector(`#builder-container .question-card:nth-child(${qi+1})`);
+  const placed = JSON.parse(card.dataset.placed || '[]');
+  const removed = placed.splice(idx, 1)[0];
+  card.dataset.placed = JSON.stringify(placed);
+  const chip = document.getElementById(`sb-chip-${qi}-${removed.chipIdx}`);
+  if (chip) chip.classList.remove('placed');
+  renderSB(qi, placed);
+}
+function resetBuilder(qi) {
+  const card = document.querySelector(`#builder-container .question-card:nth-child(${qi+1})`);
+  card.dataset.placed = JSON.stringify([]);
+  card.querySelectorAll('.word-chip').forEach(c => c.classList.remove('placed'));
+  renderSB(qi, []);
+  document.getElementById('sb-fb-' + qi).className = 'feedback';
+}
+function checkBuilder(qi) {
+  const card = document.querySelector(`#builder-container .question-card:nth-child(${qi+1})`);
+  const placed = JSON.parse(card.dataset.placed || '[]');
+  const built = placed.map(p => p.word).join(' ').toLowerCase().replace(/[?!.]$/, '');
+  const correct = builderQuestions[qi].answer.toLowerCase().replace(/[?!.]$/, '');
+  const fb = document.getElementById('sb-fb-' + qi);
+  if (built === correct) { fb.textContent = '✅ Perfect!'; fb.className = 'feedback show correct-fb'; }
+  else { fb.textContent = `❌ Correct: "${builderQuestions[qi].answer}"`; fb.className = 'feedback show wrong-fb'; }
+}
+
+// ===== GAME =====
+let gameQs = [], gameIdx = 0, gameScore = 0, gameCorrect = 0, gameAnswered = false;
+function startGame() {
+  gameQs = [...allQuestions].sort(() => Math.random() - 0.5).slice(0, 15);
+  gameIdx = 0; gameScore = 0; gameCorrect = 0;
+  document.getElementById('game-start').classList.add('hidden');
+  document.getElementById('game-results').classList.add('hidden');
+  document.getElementById('game-play').classList.remove('hidden');
+  loadGameQ();
+}
+function loadGameQ() {
+  if (gameIdx >= gameQs.length) { endGame(); return; }
+  gameAnswered = false;
+  const q = gameQs[gameIdx];
+  document.getElementById('q-counter').textContent = `${gameIdx+1}/15`;
+  document.getElementById('progress-fill').style.width = `${(gameIdx/15)*100}%`;
+  document.getElementById('game-question-area').innerHTML = `
+    <div class="question-card">
+      <div class="question-num">${q.topic} · Q${gameIdx+1} of 15</div>
+      <div class="question-text">${q.q}</div>
+      <div class="options" id="g-opts">
+        ${q.opts.map((o, j) => `<button class="option-btn" onclick="gameAnswer(${j})">${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="g-fb"></div>
+      <div style="margin-top:13px;text-align:right;" id="g-next" class="hidden">
+        <button class="btn btn-primary" onclick="nextGameQ()">Next ▶</button>
+      </div>
+    </div>`;
+}
+function gameAnswer(sel) {
+  if (gameAnswered) return; gameAnswered = true;
+  const q = gameQs[gameIdx];
+  const opts = document.querySelectorAll('#g-opts .option-btn');
+  opts.forEach(b => b.disabled = true);
+  opts[q.ans].classList.add('correct');
+  const fb = document.getElementById('g-fb');
+  if (sel === q.ans) { gameScore += 10; gameCorrect++; document.getElementById('live-score').textContent = gameScore; fb.textContent = '✅ Correct! +10 pts!'; fb.className = 'feedback show correct-fb'; }
+  else { opts[sel].classList.add('wrong'); fb.textContent = `❌ Answer: "${q.opts[q.ans]}"`; fb.className = 'feedback show wrong-fb'; }
+  document.getElementById('g-next').classList.remove('hidden');
+}
+function nextGameQ() { gameIdx++; loadGameQ(); }
+function endGame() {
+  document.getElementById('game-play').classList.add('hidden');
+  document.getElementById('game-results').classList.remove('hidden');
+  document.getElementById('progress-fill').style.width = '100%';
+  document.getElementById('res-score').textContent = gameScore + ' pts';
+  document.getElementById('res-sub').textContent = `You got ${gameCorrect} out of 15 correct!`;
+  let emoji, msg;
+  if (gameCorrect >= 13) { emoji = '🏆'; msg = 'World Champion! Amazing!'; }
+  else if (gameCorrect >= 10) { emoji = '🌟'; msg = 'Great job! Keep it up!'; }
+  else if (gameCorrect >= 7) { emoji = '🙂'; msg = 'Good try! Practice more!'; }
+  else { emoji = '🌍'; msg = "Don't give up! Try again!"; }
+  document.getElementById('res-emoji').textContent = emoji;
+  document.getElementById('res-msg').textContent = msg;
+}
+
+// ===== VOCAB =====
+const vocabData = {
+  countries: [
+    ['Türkiye','Türkiye'], ['France','Fransa'], ['Italy','İtalya'], ['Spain','İspanya'],
+    ['Germany','Almanya'], ['Japan','Japonya'], ['China','Çin'], ['Brazil','Brezilya'],
+    ['Australia','Avustralya'], ['Russia','Rusya'], ['Canada','Kanada'], ['Argentina','Arjantin'],
+    ['Asia','Asya'], ['Europe','Avrupa'], ['Africa','Afrika'], ['Antarctica','Antarktika'],
+  ],
+  foods: [
+    ['pizza','pizza'], ['pasta','makarna'], ['gelato','İtalyan dondurması'], ['croissant','kruvasan'],
+    ['dumpling','mantı'], ['pretzel','simit'], ['kebab','kebap'], ['sausage','sosis'],
+    ['seafood','deniz ürünleri'], ['cheese','peynir'], ['rice','pirinç'], ['chocolate','çikolata'],
+    ['street food','sokak yemeği'], ['cuisine','mutfak'], ['recipe','tarif'], ['ingredient','malzeme'],
+  ],
+  cooking: [
+    ['prepare','hazırlamak'], ['boil','kaynatmak'], ['fry','kızartmak'], ['grill','ızgara yapmak'],
+    ['bake','fırında pişirmek'], ['cut','kesmek'], ['mix','karıştırmak'], ['serve','servis etmek'],
+    ['add','eklemek'], ['wash','yıkamak'], ['cook','pişirmek'], ['remove','çıkarmak'],
+  ],
+  culture: [
+    ['tradition','gelenek'], ['culture','kültür'], ['nationality','milliyet'], ['continent','kıta'],
+    ['festival','festival'], ['explore','keşfetmek'], ['visit','ziyaret etmek'], ['travel','seyahat etmek'],
+    ['delicious','lezzetli'], ['spicy','baharatlı'], ['sweet','tatlı'], ['popular','popüler'],
+    ['flavour','lezzet'], ['traditional','geleneksel'], ['international','uluslararası'], ['value','değer'],
+  ]
+};
+function initVocab() {
+  const keys = { countries: 'vocab-countries', foods: 'vocab-foods', cooking: 'vocab-cooking', culture: 'vocab-culture' };
+  Object.keys(keys).forEach(k => {
+    const el = document.getElementById(keys[k]);
+    if (!el || el.innerHTML) return;
+    el.innerHTML = vocabData[k].map(([en, tr]) => `<div class="vocab-item"><div class="vocab-en">${en}</div><div class="vocab-tr">${tr}</div></div>`).join('');
+  });
+}
+
+// ===== QUANTIFIERS PAGE =====
+const foodItems = [
+  { name: 'apple', type: 'C' }, { name: 'milk', type: 'U' }, { name: 'egg', type: 'C' },
+  { name: 'sugar', type: 'U' }, { name: 'carrot', type: 'C' }, { name: 'flour', type: 'U' },
+  { name: 'tomato', type: 'C' }, { name: 'water', type: 'U' }, { name: 'burger', type: 'C' },
+  { name: 'cheese', type: 'U' }, { name: 'lemon', type: 'C' }, { name: 'bread', type: 'U' },
+  { name: 'mushroom', type: 'C' }, { name: 'rice', type: 'U' }, { name: 'strawberry', type: 'C' },
+  { name: 'meat', type: 'U' },
+];
+const quantQuiz = [
+  { q: '___ eggs are there in the fridge?', opts: ['How much', 'How many', 'A few', 'A little'], ans: 1 },
+  { q: '___ milk do you need for breakfast?', opts: ['How many', 'A few', 'How much', 'Both'], ans: 2 },
+  { q: 'We need ___ cucumbers for the salad.', opts: ['a little', 'much', 'a few', 'any'], ans: 2 },
+  { q: 'Add ___ oil to the pan.', opts: ['a few', 'many', 'a little', 'some'], ans: 2 },
+  { q: 'There is ___ rain today. Stay inside!', opts: ['too many', 'too much', 'enough', 'a few'], ans: 1 },
+  { q: 'Please buy ___ apples AND cucumbers.', opts: ['either', 'neither', 'both', 'any'], ans: 2 },
+  { q: 'We have ___ coffee NOR tea at home.', opts: ['both', 'either', 'neither', 'some'], ans: 2 },
+  { q: "Our team hasn't got ___ players. We need new ones.", opts: ['too many', 'too much', 'enough', 'much'], ans: 2 },
+];
+const quantFill = [
+  { sentence: 'I want ___ eggs. (positive)', answer: 'some', opts: ['some', 'any'] },
+  { sentence: 'Do you need ___ help? (question)', answer: 'any', opts: ['some', 'any'] },
+  { sentence: "There aren't ___ shops here. (negative)", answer: 'any', opts: ['some', 'any'] },
+  { sentence: 'We have ___ a lot of milk. → use much or a lot of?', answer: 'a lot of', opts: ['much', 'a lot of'] },
+  { sentence: 'How ___ eggs do you need?', answer: 'many', opts: ['much', 'many'] },
+  { sentence: 'How ___ sugar is in this cake?', answer: 'much', opts: ['much', 'many'] },
+];
+
+let quantInited = false;
+function initQuantifiers() {
+  if (quantInited) return; quantInited = true;
+  // Food sort
+  const chips = document.getElementById('food-sort-chips');
+  foodItems.forEach(f => {
+    const chip = document.createElement('div');
+    chip.className = 'food-chip neutral';
+    chip.textContent = f.name;
+    chip.dataset.revealed = '0';
+    chip.onclick = function() {
+      if (this.dataset.revealed === '1') return;
+      this.dataset.revealed = '1';
+      if (f.type === 'C') { this.classList.remove('neutral'); this.classList.add('countable'); this.textContent = f.name + ' (C ✓)'; }
+      else { this.classList.remove('neutral'); this.classList.add('uncountable'); this.textContent = f.name + ' (U ✓)'; }
+    };
+    chips.appendChild(chip);
+  });
+  // Quantifier quiz
+  const qc = document.getElementById('quant-quiz-container');
+  quantQuiz.forEach((q, i) => {
+    const div = document.createElement('div'); div.className = 'question-card'; div.style.marginBottom = '12px';
+    div.innerHTML = `
+      <div class="question-num">⚖️ Quantifier Q${i+1}</div>
+      <div class="question-text" style="font-size:14px;">${q.q}</div>
+      <div class="options" id="qq-opts-${i}">
+        ${q.opts.map((o, j) => `<button class="option-btn" onclick="checkQuantQ(${i},${j})">${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="qq-fb-${i}"></div>`;
+    qc.appendChild(div);
+  });
+  // Fill quantifiers
+  const fc = document.getElementById('quant-fill-container');
+  quantFill.forEach((q, i) => {
+    const div = document.createElement('div'); div.className = 'question-card'; div.style.marginBottom = '12px';
+    div.innerHTML = `
+      <div class="question-num">📝 Fill in · ${i+1}/${quantFill.length}</div>
+      <div style="font-size:14px;font-weight:600;margin-bottom:10px;">${q.sentence}</div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px;">
+        ${q.opts.map(o => `<button class="option-btn" style="padding:8px 14px;" onclick="checkQuantFill(${i},'${o.replace(/'/g,"\\'")}',this)">${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="qf-fb-${i}"></div>`;
+    fc.appendChild(div);
+  });
+}
+function checkQuantQ(qi, sel) {
+  const q = quantQuiz[qi];
+  const opts = document.querySelectorAll(`#qq-opts-${qi} .option-btn`);
+  opts.forEach(b => b.disabled = true);
+  opts[q.ans].classList.add('correct');
+  const fb = document.getElementById('qq-fb-' + qi);
+  if (sel === q.ans) { fb.textContent = '✅ Correct!'; fb.className = 'feedback show correct-fb'; }
+  else { opts[sel].classList.add('wrong'); fb.textContent = `❌ Answer: "${q.opts[q.ans]}"`; fb.className = 'feedback show wrong-fb'; }
+}
+function checkQuantFill(qi, selected, btn) {
+  const q = quantFill[qi];
+  const allBtns = btn.parentElement.querySelectorAll('.option-btn');
+  allBtns.forEach(b => b.disabled = true);
+  const fb = document.getElementById('qf-fb-' + qi);
+  if (selected === q.answer) { btn.classList.add('correct'); fb.textContent = '✅ Correct!'; fb.className = 'feedback show correct-fb'; }
+  else {
+    btn.classList.add('wrong');
+    allBtns.forEach(b => { if (b.textContent === q.answer) b.classList.add('correct'); });
+    fb.textContent = `❌ Answer: "${q.answer}"`; fb.className = 'feedback show wrong-fb';
+  }
+}
+
+// Init on load
+initMC(); initFill(); initBuilder();
+</script>
+</body>
+</html>

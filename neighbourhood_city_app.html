@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Life in the Neighbourhood & City – English App</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #1a1035 0%, #2d1b69 40%, #1a2a4a 100%);
+    min-height: 100vh;
+    color: #fff;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image:
+      radial-gradient(1px 1px at 8% 12%, rgba(255,255,255,0.7) 0%, transparent 100%),
+      radial-gradient(1px 1px at 22% 35%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 42% 8%, rgba(255,255,255,0.8) 0%, transparent 100%),
+      radial-gradient(1px 1px at 68% 25%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 85% 55%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 93% 18%, rgba(255,255,255,0.7) 0%, transparent 100%),
+      radial-gradient(1px 1px at 30% 68%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 58% 82%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 12% 88%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 77% 72%, rgba(255,255,255,0.4) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .container { max-width: 800px; margin: 0 auto; padding: 20px 16px 60px; position: relative; z-index: 1; }
+
+  /* Header */
+  .header { text-align: center; padding: 28px 0 18px; }
+  .header .icon-row { font-size: 34px; margin-bottom: 10px; letter-spacing: 6px; }
+  .header h1 {
+    font-size: clamp(20px, 5vw, 30px); font-weight: 800;
+    background: linear-gradient(135deg, #fbbf24, #f472b6, #a78bfa);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 4px;
+  }
+  .header p { font-size: 14px; color: #c4b5fd; }
+
+  /* Nav */
+  .nav { display: flex; gap: 8px; justify-content: center; margin: 20px 0; flex-wrap: wrap; }
+  .nav-btn {
+    padding: 9px 18px; border-radius: 50px; border: 2px solid rgba(255,255,255,0.18);
+    background: rgba(255,255,255,0.07); color: #cbd5e1; font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: all 0.2s; backdrop-filter: blur(4px);
+  }
+  .nav-btn:hover { background: rgba(255,255,255,0.14); color: #fff; }
+  .nav-btn.active {
+    background: linear-gradient(135deg, #f59e0b, #ec4899);
+    border-color: transparent; color: #fff;
+    box-shadow: 0 4px 15px rgba(245,158,11,0.4);
+  }
+
+  .page { display: none; } .page.active { display: block; }
+
+  /* Cards */
+  .card { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; padding: 20px; margin-bottom: 16px; backdrop-filter: blur(8px); }
+  .card h2 { font-size: 17px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .card h3 { font-size: 14px; font-weight: 700; color: #fcd34d; margin: 14px 0 8px; }
+  .card p { font-size: 14px; line-height: 1.7; color: #e2e8f0; }
+  .rule-box { background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.3); border-radius: 10px; padding: 11px 14px; margin: 8px 0; font-size: 14px; color: #fde68a; }
+  .example { background: rgba(167,139,250,0.12); border-left: 3px solid #a78bfa; border-radius: 0 8px 8px 0; padding: 9px 13px; margin: 6px 0; font-size: 14px; color: #ede9fe; font-style: italic; }
+  .tag { display: inline-block; background: rgba(236,72,153,0.25); border: 1px solid rgba(236,72,153,0.4); border-radius: 6px; padding: 3px 10px; font-size: 12px; font-weight: 700; color: #fbcfe8; margin: 2px; }
+  .tag.yellow { background: rgba(251,191,36,0.2); border-color: rgba(251,191,36,0.4); color: #fde68a; }
+  .tag.purple { background: rgba(167,139,250,0.2); border-color: rgba(167,139,250,0.4); color: #ddd6fe; }
+  .tag.green { background: rgba(52,211,153,0.2); border-color: rgba(52,211,153,0.4); color: #6ee7b7; }
+
+  /* Section title */
+  .section-title { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #fbbf24; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: rgba(251,191,36,0.2); }
+
+  /* Score bar */
+  .score-bar { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 11px 18px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; font-size: 14px; }
+  .score-val { font-size: 22px; font-weight: 800; background: linear-gradient(135deg, #fbbf24, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .progress-bar { height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; margin-top: 5px; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, #f59e0b, #ec4899); border-radius: 3px; transition: width 0.4s; }
+
+  /* Quiz */
+  .question-card { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; padding: 22px; margin-bottom: 16px; backdrop-filter: blur(8px); }
+  .question-num { font-size: 11px; font-weight: 700; letter-spacing: 1px; color: #fbbf24; text-transform: uppercase; margin-bottom: 9px; }
+  .question-text { font-size: clamp(15px, 3vw, 19px); font-weight: 600; line-height: 1.5; margin-bottom: 18px; }
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+  @media (max-width: 480px) { .options { grid-template-columns: 1fr; } }
+  .option-btn { padding: 12px 14px; border-radius: 11px; border: 2px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.06); color: #e2e8f0; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; text-align: left; line-height: 1.4; }
+  .option-btn:hover:not(:disabled) { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.28); transform: translateY(-2px); }
+  .option-btn.correct { background: rgba(52,211,153,0.25); border-color: #34d399; color: #a7f3d0; }
+  .option-btn.wrong { background: rgba(239,68,68,0.25); border-color: #ef4444; color: #fca5a5; }
+
+  /* Fill */
+  .blank-input { background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 7px 12px; color: #fff; font-size: 15px; font-weight: 600; width: 160px; outline: none; transition: border-color 0.2s; text-align: center; }
+  .blank-input:focus { border-color: #fbbf24; }
+  .blank-input.correct { border-color: #34d399; background: rgba(52,211,153,0.15); }
+  .blank-input.wrong { border-color: #ef4444; background: rgba(239,68,68,0.15); }
+
+  /* Sentence builder */
+  .word-bank { display: flex; flex-wrap: wrap; gap: 7px; margin: 12px 0; min-height: 46px; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 10px; border: 1px dashed rgba(255,255,255,0.15); }
+  .word-chip { padding: 6px 13px; background: linear-gradient(135deg, rgba(245,158,11,0.35), rgba(236,72,153,0.35)); border: 1px solid rgba(236,72,153,0.45); border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; color: #fce7f3; }
+  .word-chip:hover { transform: scale(1.05); background: linear-gradient(135deg, rgba(245,158,11,0.55), rgba(236,72,153,0.55)); }
+  .word-chip.placed { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.1); color: #64748b; }
+  .sentence-area { display: flex; flex-wrap: wrap; gap: 7px; min-height: 52px; padding: 11px; background: rgba(255,255,255,0.04); border-radius: 10px; border: 2px dashed rgba(251,191,36,0.3); align-items: center; }
+  .placed-chip { padding: 6px 13px; background: rgba(251,191,36,0.2); border: 1px solid rgba(251,191,36,0.4); border-radius: 20px; font-size: 13px; font-weight: 600; color: #fde68a; cursor: pointer; transition: all 0.2s; }
+  .placed-chip:hover { background: rgba(239,68,68,0.2); border-color: #ef4444; color: #fca5a5; }
+
+  /* Feedback */
+  .feedback { display: none; border-radius: 10px; padding: 11px 15px; font-size: 14px; font-weight: 600; margin: 11px 0; text-align: center; }
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: rgba(52,211,153,0.2); border: 1px solid #34d399; color: #a7f3d0; }
+  .feedback.wrong-fb { background: rgba(239,68,68,0.2); border: 1px solid #ef4444; color: #fca5a5; }
+
+  /* Buttons */
+  .btn { display: inline-block; padding: 12px 26px; border-radius: 50px; border: none; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; text-align: center; }
+  .btn-primary { background: linear-gradient(135deg, #f59e0b, #ec4899); color: #fff; box-shadow: 0 4px 15px rgba(245,158,11,0.3); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(245,158,11,0.4); }
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+  .btn-success { background: linear-gradient(135deg, #34d399, #059669); color: #fff; box-shadow: 0 4px 15px rgba(52,211,153,0.3); }
+  .btn-success:hover { transform: translateY(-2px); }
+
+  /* Results */
+  .results-screen { text-align: center; padding: 28px 0; }
+  .results-emoji { font-size: 68px; margin-bottom: 14px; }
+  .results-score { font-size: 50px; font-weight: 900; background: linear-gradient(135deg, #fbbf24, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 6px; }
+  .results-msg { font-size: 19px; font-weight: 700; margin-bottom: 6px; }
+  .results-sub { font-size: 14px; color: #94a3b8; margin-bottom: 26px; }
+
+  /* Inner tabs */
+  .inner-tabs { display: flex; gap: 5px; margin-bottom: 18px; background: rgba(0,0,0,0.2); border-radius: 12px; padding: 4px; }
+  .inner-tab { flex: 1; padding: 9px; border-radius: 9px; border: none; background: transparent; color: #94a3b8; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; text-align: center; }
+  .inner-tab.active { background: rgba(245,158,11,0.4); color: #fff; }
+  .inner-page { display: none; } .inner-page.active { display: block; }
+
+  /* Vocab */
+  .vocab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; margin-top: 10px; }
+  .vocab-item { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 9px 11px; text-align: center; }
+  .vocab-en { font-size: 13px; font-weight: 700; color: #e2e8f0; }
+  .vocab-tr { font-size: 11px; color: #fbbf24; margin-top: 3px; }
+
+  /* City map mini */
+  .map-container { background: rgba(0,0,0,0.3); border-radius: 12px; padding: 16px; margin-top: 10px; }
+  .map-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; }
+  .map-place { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 10px 6px; text-align: center; font-size: 11px; font-weight: 600; color: #e2e8f0; cursor: default; }
+  .map-place .icon { font-size: 20px; display: block; margin-bottom: 3px; }
+
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="icon-row">🏘️🚌🗺️🏫🎬</div>
+    <h1>Life in the Neighbourhood & City</h1>
+    <p>5th Grade English – Theme 5 · Level A1/A2</p>
+  </div>
+
+  <nav class="nav">
+    <button class="nav-btn active" onclick="showPage('learn')">🧠 Learn</button>
+    <button class="nav-btn" onclick="showPage('practice')">🎮 Practice</button>
+    <button class="nav-btn" onclick="showPage('game')">🏆 Game</button>
+    <button class="nav-btn" onclick="showPage('vocab')">📖 Words</button>
+    <button class="nav-btn" onclick="showPage('map')">🗺️ City Map</button>
+  </nav>
+
+  <!-- ===================== LEARN PAGE ===================== -->
+  <div class="page active" id="page-learn">
+
+    <div class="section-title">Grammar & Language Topics</div>
+
+    <!-- Past Simple was/were -->
+    <div class="card">
+      <h2>⏰ Past Simple: WAS / WERE</h2>
+      <p>We use <b>was / were</b> to talk about where someone <b>was</b> in the past.</p>
+      <h3>Subject – Verb Table</h3>
+      <div class="rule-box">
+        <span class="tag yellow">I / He / She / It → was</span>
+        <span class="tag yellow">You / We / They → were</span>
+      </div>
+      <div class="example">📍 I <b>was</b> at the bus stop yesterday.</div>
+      <div class="example">🏛️ They <b>were</b> near the museum last week.</div>
+      <h3>Negative Forms</h3>
+      <div class="rule-box">
+        <span class="tag purple">was not → wasn't</span>
+        <span class="tag purple">were not → weren't</span>
+      </div>
+      <div class="example">😐 She <b>wasn't</b> at the park after school.</div>
+      <div class="example">😐 We <b>weren't</b> in the city centre last night.</div>
+      <h3>Questions</h3>
+      <div class="rule-box"><b>Was / Were + subject + place?</b></div>
+      <div class="example">❓ <b>Was</b> she at home last night?</div>
+      <div class="example">❓ <b>Were</b> they near the museum?</div>
+    </div>
+
+    <!-- Past Simple regular/irregular -->
+    <div class="card">
+      <h2>📚 Past Simple: Regular & Irregular Verbs</h2>
+      <h3>Regular Verbs → add -ed</h3>
+      <div class="rule-box">
+        <span class="tag green">play → played</span>
+        <span class="tag green">walk → walked</span>
+        <span class="tag green">visit → visited</span>
+        <span class="tag green">wait → waited</span>
+        <span class="tag green">listen → listened</span>
+        <span class="tag green">watch → watched</span>
+      </div>
+      <div class="example">🎸 John <b>played</b> the guitar last night.</div>
+      <h3>-y endings → change y to i + ed</h3>
+      <div class="rule-box"><span class="tag">try → tried</span> <span class="tag">cry → cried</span></div>
+      <h3>Irregular Verbs</h3>
+      <div class="rule-box">
+        <span class="tag yellow">go → went</span>
+        <span class="tag yellow">see → saw</span>
+        <span class="tag yellow">come → came</span>
+        <span class="tag yellow">read → read</span>
+        <span class="tag yellow">have → had</span>
+        <span class="tag yellow">buy → bought</span>
+      </div>
+      <div class="example">🛒 Lucy <b>went</b> to the library last Saturday.</div>
+      <h3>Negative: didn't + verb (base form)</h3>
+      <div class="rule-box"><b>Subject + didn't + verb</b></div>
+      <div class="example">📺 Grandpa <b>didn't watch</b> TV last night.</div>
+      <h3>Questions: Did + subject + verb?</h3>
+      <div class="example">❓ <b>Did</b> Jane like the party?</div>
+    </div>
+
+    <!-- Prepositions -->
+    <div class="card">
+      <h2>📍 Prepositions of Place</h2>
+      <p>Use these to say <b>where</b> something is.</p>
+      <div class="rule-box">
+        <span class="tag">in – inside</span>
+        <span class="tag">on – on top of (touching)</span>
+        <span class="tag">under – below</span>
+        <span class="tag">next to – beside</span>
+        <span class="tag">behind – at the back</span>
+        <span class="tag">in front of – at the front</span>
+        <span class="tag">between – in the middle of two</span>
+        <span class="tag">near – close to</span>
+        <span class="tag">opposite – across from</span>
+        <span class="tag">over – above (not touching)</span>
+      </div>
+      <div class="example">🏦 The bank is <b>between</b> the cinema and the grocery.</div>
+      <div class="example">🐕 The dog is <b>in front of</b> the doghouse.</div>
+      <div class="example">🚌 The bus stop is <b>opposite</b> the cinema.</div>
+    </div>
+
+    <!-- Time expressions -->
+    <div class="card">
+      <h2>🕐 Past Time Expressions</h2>
+      <div class="rule-box">
+        <span class="tag yellow">yesterday</span>
+        <span class="tag yellow">last night</span>
+        <span class="tag yellow">last week</span>
+        <span class="tag yellow">last month</span>
+        <span class="tag yellow">two days ago</span>
+        <span class="tag yellow">five years ago</span>
+        <span class="tag yellow">yesterday morning</span>
+        <span class="tag yellow">yesterday evening</span>
+      </div>
+      <div class="example">🗓️ Tom <b>went</b> to the library <b>last Saturday</b>.</div>
+      <div class="example">🗓️ I <b>finished</b> my homework <b>last night</b>.</div>
+    </div>
+
+  </div>
+
+  <!-- ===================== PRACTICE PAGE ===================== -->
+  <div class="page" id="page-practice">
+    <div class="inner-tabs">
+      <button class="inner-tab active" onclick="showInner('multiple')">🔤 Multiple Choice</button>
+      <button class="inner-tab" onclick="showInner('fill')">✏️ Fill Blanks</button>
+      <button class="inner-tab" onclick="showInner('builder')">🧩 Build Sentence</button>
+    </div>
+    <div class="inner-page active" id="inner-multiple"><div id="mc-container"></div></div>
+    <div class="inner-page" id="inner-fill"><div id="fill-container"></div></div>
+    <div class="inner-page" id="inner-builder"><div id="builder-container"></div></div>
+  </div>
+
+  <!-- ===================== GAME PAGE ===================== -->
+  <div class="page" id="page-game">
+    <div id="game-start" class="question-card" style="text-align:center; padding: 38px 22px;">
+      <div style="font-size: 58px; margin-bottom: 14px;">🏆</div>
+      <h2 style="font-size: 22px; margin-bottom: 9px; justify-content: center;">Game Mode!</h2>
+      <p style="color: #94a3b8; margin-bottom: 22px;">Answer 15 questions. Earn 10 points for each correct answer!</p>
+      <button class="btn btn-success" onclick="startGame()" style="font-size: 17px; padding: 15px 38px;">Start Game 🚌</button>
+    </div>
+    <div id="game-play" class="hidden">
+      <div class="score-bar">
+        <div><div style="font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px;">Score</div><div class="score-val" id="live-score">0</div></div>
+        <div style="text-align: center;"><div style="font-size: 11px; color: #94a3b8;">Question</div><div style="font-size: 17px; font-weight: 700;" id="q-counter">1/15</div></div>
+        <div style="text-align: right;"><div style="font-size: 11px; color: #94a3b8; margin-bottom: 4px;">Progress</div><div class="progress-bar" style="width: 110px;"><div class="progress-fill" id="progress-fill" style="width: 0%"></div></div></div>
+      </div>
+      <div id="game-question-area"></div>
+    </div>
+    <div id="game-results" class="hidden">
+      <div class="question-card results-screen">
+        <div class="results-emoji" id="res-emoji">🎉</div>
+        <div class="results-score" id="res-score">0 pts</div>
+        <div class="results-msg" id="res-msg">Great Job!</div>
+        <div class="results-sub" id="res-sub">You got 0 out of 15 correct!</div>
+        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+          <button class="btn btn-success" onclick="startGame()">Play Again 🔄</button>
+          <button class="btn btn-primary" onclick="showPage('learn')">Review 🧠</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== VOCAB PAGE ===================== -->
+  <div class="page" id="page-vocab">
+    <div class="section-title">Theme 5 Key Vocabulary</div>
+    <div class="card"><h2>🏛️ Places in the City</h2><div class="vocab-grid" id="vocab-places"></div></div>
+    <div class="card"><h2>🚌 Transport</h2><div class="vocab-grid" id="vocab-transport"></div></div>
+    <div class="card"><h2>📍 Prepositions</h2><div class="vocab-grid" id="vocab-prepositions"></div></div>
+    <div class="card"><h2>🕐 Time Words</h2><div class="vocab-grid" id="vocab-time"></div></div>
+  </div>
+
+  <!-- ===================== CITY MAP PAGE ===================== -->
+  <div class="page" id="page-map">
+    <div class="section-title">Interactive City Map</div>
+    <div class="card">
+      <h2>🗺️ Where is it?</h2>
+      <p style="margin-bottom: 12px; font-size: 13px; color: #94a3b8;">Tap a place to see example sentences!</p>
+      <div class="map-container">
+        <div class="map-grid" id="map-grid"></div>
+        <div id="map-info" style="background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.3); border-radius: 10px; padding: 13px 15px; font-size: 14px; color: #fde68a; min-height: 56px; text-align: center;">
+          👆 Tap a place above to see location examples!
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>📝 Map Practice Quiz</h2>
+      <p style="margin-bottom: 14px; font-size: 13px; color: #94a3b8;">Choose the correct preposition for each sentence.</p>
+      <div id="map-quiz"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ===== NAVIGATION =====
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  event.target.classList.add('active');
+  if (id === 'practice') initPractice();
+  if (id === 'vocab') initVocab();
+  if (id === 'map') initMap();
+}
+function showInner(id) {
+  document.querySelectorAll('.inner-page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.inner-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('inner-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ===== ALL QUESTIONS =====
+const allQuestions = [
+  // was/were
+  { type: 'mc', q: 'I ___ at the bus stop yesterday.', opts: ['am', 'was', 'were', 'is'], ans: 1, topic: '⏰ Was/Were' },
+  { type: 'mc', q: 'They ___ near the museum last week.', opts: ['was', 'is', 'were', 'are'], ans: 2, topic: '⏰ Was/Were' },
+  { type: 'mc', q: 'She ___ at the park after school.', opts: ['were', 'are', 'was', 'be'], ans: 2, topic: '⏰ Was/Were' },
+  { type: 'mc', q: 'We ___ in the city centre last night.', opts: ['wasn\'t', 'weren\'t', 'was', 'is'], ans: 1, topic: '⏰ Wasn\'t/Weren\'t' },
+  { type: 'mc', q: '___ Lucy at the bus stop yesterday?', opts: ['Were', 'Was', 'Is', 'Did'], ans: 1, topic: '⏰ Question' },
+  { type: 'mc', q: '___ they at the park after school?', opts: ['Was', 'Is', 'Are', 'Were'], ans: 3, topic: '⏰ Question' },
+  // Past simple regular
+  { type: 'mc', q: 'John ___ the guitar last night. (play)', opts: ['plays', 'played', 'play', 'playing'], ans: 1, topic: '📚 Past Regular' },
+  { type: 'mc', q: 'Mrs. Taylor ___ the food. (cook)', opts: ['cooks', 'cooked', 'cooking', 'cook'], ans: 1, topic: '📚 Past Regular' },
+  { type: 'mc', q: 'Grandpa ___ TV last night. (not watch)', opts: ["wasn't watch", "didn't watched", "didn't watch", "not watched"], ans: 2, topic: '📚 Past Negative' },
+  { type: 'mc', q: '___ Jane like the party?', opts: ['Was', 'Did', 'Does', 'Is'], ans: 1, topic: '📚 Past Question' },
+  // Past simple irregular
+  { type: 'mc', q: 'Lucy ___ to the library last Saturday. (go)', opts: ['goes', 'went', 'goed', 'going'], ans: 1, topic: '📚 Past Irregular' },
+  { type: 'mc', q: 'We ___ old things at the museum. (see)', opts: ['sees', 'seed', 'saw', 'seen'], ans: 2, topic: '📚 Past Irregular' },
+  // Prepositions
+  { type: 'mc', q: 'The bank is ___ the cinema and the grocery.', opts: ['behind', 'in front of', 'between', 'on'], ans: 2, topic: '📍 Prepositions' },
+  { type: 'mc', q: 'The bus stop is ___ the cinema.', opts: ['between', 'opposite', 'under', 'in'], ans: 1, topic: '📍 Prepositions' },
+  { type: 'mc', q: 'The cat is ___ the cabinet. (on top, touching)', opts: ['under', 'in', 'over', 'on'], ans: 3, topic: '📍 Prepositions' },
+  { type: 'mc', q: 'The dog is ___ the table. (below)', opts: ['on', 'over', 'under', 'between'], ans: 2, topic: '📍 Prepositions' },
+  { type: 'mc', q: 'The library is ___ the house. (close to)', opts: ['opposite', 'between', 'behind', 'near'], ans: 3, topic: '📍 Prepositions' },
+];
+
+const fillQuestions = [
+  { sentence: 'I [was] at the bus stop yesterday.', answer: 'was', hint: 'I → ?' },
+  { sentence: 'They [were] near the museum last week.', answer: 'were', hint: 'they → ?' },
+  { sentence: 'She [wasn\'t] at the park. (negative)', answer: "wasn't", hint: "was + n't" },
+  { sentence: 'John [played] the guitar last night.', answer: 'played', hint: 'play + ed' },
+  { sentence: 'Lucy [went] to the library last Saturday.', answer: 'went', hint: 'irregular: go → ?' },
+  { sentence: 'We [saw] old things at the museum.', answer: 'saw', hint: 'irregular: see → ?' },
+  { sentence: 'The bank is [between] the cinema and the grocery.', answer: 'between', hint: 'in the middle of two things' },
+  { sentence: 'The bus stop is [opposite] the cinema.', answer: 'opposite', hint: 'across from' },
+  { sentence: 'She [didn\'t watch] TV last night.', answer: "didn't watch", hint: "didn't + verb" },
+  { sentence: '[Did] you visit your friends? (question)', answer: 'Did', hint: 'past question word' },
+];
+
+const builderQuestions = [
+  { words: ['was', 'I', 'stop', 'yesterday', 'at', 'the', 'bus'], answer: 'I was at the bus stop yesterday' },
+  { words: ['the', 'museum', 'near', 'were', 'They', 'week', 'last'], answer: 'They were near the museum last week' },
+  { words: ['library', 'went', 'to', 'Lucy', 'the', 'Saturday', 'last'], answer: 'Lucy went to the library last Saturday' },
+  { words: ['cinema', 'is', 'The', 'and', 'between', 'grocery', 'bank', 'the', 'the'], answer: 'The bank is between the cinema and the grocery' },
+  { words: ['guitar', 'played', 'John', 'the', 'night', 'last'], answer: 'John played the guitar last night' },
+  { words: ['watch', 'didn\'t', 'Grandpa', 'night', 'last', 'TV'], answer: "Grandpa didn't watch TV last night" },
+  { words: ['the', 'Did', 'party?', 'like', 'Jane'], answer: 'Did Jane like the party?' },
+];
+
+// ===== PRACTICE: MULTIPLE CHOICE =====
+let practiceInited = false;
+function initPractice() {
+  if (practiceInited) return;
+  practiceInited = true;
+  initMC(); initFill(); initBuilder();
+}
+
+function initMC() {
+  const c = document.getElementById('mc-container'); c.innerHTML = '';
+  allQuestions.forEach((q, i) => {
+    const div = document.createElement('div'); div.className = 'question-card';
+    div.innerHTML = `
+      <div class="question-num">${q.topic} · Question ${i+1}/${allQuestions.length}</div>
+      <div class="question-text">${q.q}</div>
+      <div class="options" id="mc-opts-${i}">
+        ${q.opts.map((o, j) => `<button class="option-btn" onclick="checkMC(${i},${j})">${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="mc-fb-${i}"></div>`;
+    c.appendChild(div);
+  });
+}
+function checkMC(qi, sel) {
+  const q = allQuestions[qi];
+  const opts = document.querySelectorAll(`#mc-opts-${qi} .option-btn`);
+  opts.forEach(b => b.disabled = true);
+  opts[q.ans].classList.add('correct');
+  const fb = document.getElementById('mc-fb-' + qi);
+  if (sel === q.ans) { fb.textContent = '✅ Correct! Great job!'; fb.className = 'feedback show correct-fb'; }
+  else { opts[sel].classList.add('wrong'); fb.textContent = `❌ The answer is: "${q.opts[q.ans]}"`;  fb.className = 'feedback show wrong-fb'; }
+}
+
+function initFill() {
+  const c = document.getElementById('fill-container'); c.innerHTML = '';
+  fillQuestions.forEach((q, i) => {
+    const parts = q.sentence.replace(`[${q.answer}]`, '<BLANK>').split('<BLANK>');
+    const div = document.createElement('div'); div.className = 'question-card';
+    div.innerHTML = `
+      <div class="question-num">✏️ Fill in the blank · ${i+1}/${fillQuestions.length}</div>
+      <div style="font-size: 16px; font-weight: 600; line-height: 2.2; margin-bottom: 12px;">
+        ${parts[0]}<input class="blank-input" id="fill-inp-${i}" placeholder="?" autocomplete="off">${parts[1] || ''}
+      </div>
+      <div style="color: #94a3b8; font-size: 12px; margin-bottom: 11px;">💡 Hint: ${q.hint}</div>
+      <div style="display:flex; gap: 9px; flex-wrap: wrap;">
+        <button class="btn btn-primary" onclick="checkFill(${i})">Check ✓</button>
+        <button class="btn" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #e2e8f0;" onclick="showFillAnswer(${i})">Show Answer 👁️</button>
+      </div>
+      <div class="feedback" id="fill-fb-${i}"></div>`;
+    c.appendChild(div);
+  });
+}
+function checkFill(i) {
+  const inp = document.getElementById('fill-inp-' + i);
+  const q = fillQuestions[i];
+  const val = inp.value.trim().toLowerCase();
+  const correct = q.answer.toLowerCase();
+  const fb = document.getElementById('fill-fb-' + i);
+  if (val === correct) { inp.className = 'blank-input correct'; fb.textContent = '✅ Correct!'; fb.className = 'feedback show correct-fb'; }
+  else { inp.className = 'blank-input wrong'; fb.textContent = `❌ Try again! Starts with "${q.answer[0]}"...`; fb.className = 'feedback show wrong-fb'; }
+}
+function showFillAnswer(i) {
+  const inp = document.getElementById('fill-inp-' + i);
+  inp.value = fillQuestions[i].answer; inp.className = 'blank-input correct';
+  const fb = document.getElementById('fill-fb-' + i);
+  fb.textContent = `📖 Answer: "${fillQuestions[i].answer}"`; fb.className = 'feedback show correct-fb';
+}
+
+function initBuilder() {
+  const c = document.getElementById('builder-container'); c.innerHTML = '';
+  builderQuestions.forEach((q, i) => {
+    const shuffled = [...q.words].sort(() => Math.random() - 0.5);
+    const div = document.createElement('div'); div.className = 'question-card';
+    div.innerHTML = `
+      <div class="question-num">🧩 Sentence Builder · ${i+1}/${builderQuestions.length}</div>
+      <p style="color: #94a3b8; font-size: 12px; margin-bottom: 11px;">Tap words to build the sentence. Tap a placed word to remove it.</p>
+      <div class="sentence-area" id="sb-area-${i}"><span style="color: #475569; font-size: 13px;" id="sb-ph-${i}">👆 Tap words below...</span></div>
+      <div class="word-bank" id="sb-bank-${i}">
+        ${shuffled.map((w, j) => `<div class="word-chip" id="sb-chip-${i}-${j}" onclick="placeWord(${i},'${w.replace(/'/g,"\\'")}',${j})">${w}</div>`).join('')}
+      </div>
+      <div style="display: flex; gap: 9px; flex-wrap: wrap; margin-top: 4px;">
+        <button class="btn btn-primary" onclick="checkBuilder(${i})">Check ✓</button>
+        <button class="btn" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #e2e8f0;" onclick="resetBuilder(${i})">Reset 🔄</button>
+      </div>
+      <div class="feedback" id="sb-fb-${i}"></div>`;
+    div.dataset.placed = JSON.stringify([]);
+    c.appendChild(div);
+  });
+}
+function placeWord(qi, word, chipIdx) {
+  const card = document.querySelector(`#builder-container .question-card:nth-child(${qi+1})`);
+  const placed = JSON.parse(card.dataset.placed || '[]');
+  const chip = document.getElementById(`sb-chip-${qi}-${chipIdx}`);
+  if (chip.classList.contains('placed')) return;
+  chip.classList.add('placed');
+  placed.push({ word, chipIdx });
+  card.dataset.placed = JSON.stringify(placed);
+  renderSBArea(qi, placed);
+}
+function renderSBArea(qi, placed) {
+  const area = document.getElementById('sb-area-' + qi);
+  const ph = document.getElementById('sb-ph-' + qi);
+  if (ph) ph.style.display = placed.length === 0 ? '' : 'none';
+  area.querySelectorAll('.placed-chip').forEach(c => c.remove());
+  placed.forEach((p, idx) => {
+    const span = document.createElement('span');
+    span.className = 'placed-chip'; span.textContent = p.word;
+    span.onclick = () => removeWord(qi, idx); area.appendChild(span);
+  });
+}
+function removeWord(qi, idx) {
+  const card = document.querySelector(`#builder-container .question-card:nth-child(${qi+1})`);
+  const placed = JSON.parse(card.dataset.placed || '[]');
+  const removed = placed.splice(idx, 1)[0];
+  card.dataset.placed = JSON.stringify(placed);
+  const chip = document.getElementById(`sb-chip-${qi}-${removed.chipIdx}`);
+  if (chip) chip.classList.remove('placed');
+  renderSBArea(qi, placed);
+}
+function resetBuilder(qi) {
+  const card = document.querySelector(`#builder-container .question-card:nth-child(${qi+1})`);
+  card.dataset.placed = JSON.stringify([]);
+  card.querySelectorAll('.word-chip').forEach(c => c.classList.remove('placed'));
+  renderSBArea(qi, []);
+  document.getElementById('sb-fb-' + qi).className = 'feedback';
+}
+function checkBuilder(qi) {
+  const card = document.querySelector(`#builder-container .question-card:nth-child(${qi+1})`);
+  const placed = JSON.parse(card.dataset.placed || '[]');
+  const built = placed.map(p => p.word).join(' ').toLowerCase().replace(/[?!.]$/, '');
+  const correct = builderQuestions[qi].answer.toLowerCase().replace(/[?!.]$/, '');
+  const fb = document.getElementById('sb-fb-' + qi);
+  if (built === correct) { fb.textContent = '✅ Perfect sentence!'; fb.className = 'feedback show correct-fb'; }
+  else { fb.textContent = `❌ Not quite! Correct: "${builderQuestions[qi].answer}"`; fb.className = 'feedback show wrong-fb'; }
+}
+
+// ===== GAME =====
+let gameQs = [], gameIdx = 0, gameScore = 0, gameCorrect = 0, gameAnswered = false;
+function startGame() {
+  gameQs = [...allQuestions].sort(() => Math.random() - 0.5).slice(0, 15);
+  gameIdx = 0; gameScore = 0; gameCorrect = 0;
+  document.getElementById('game-start').classList.add('hidden');
+  document.getElementById('game-results').classList.add('hidden');
+  document.getElementById('game-play').classList.remove('hidden');
+  loadGameQ();
+}
+function loadGameQ() {
+  if (gameIdx >= gameQs.length) { endGame(); return; }
+  gameAnswered = false;
+  const q = gameQs[gameIdx];
+  document.getElementById('q-counter').textContent = `${gameIdx+1}/15`;
+  document.getElementById('progress-fill').style.width = `${(gameIdx/15)*100}%`;
+  document.getElementById('game-question-area').innerHTML = `
+    <div class="question-card">
+      <div class="question-num">${q.topic} · Q${gameIdx+1} of 15</div>
+      <div class="question-text">${q.q}</div>
+      <div class="options" id="g-opts">
+        ${q.opts.map((o, j) => `<button class="option-btn" onclick="gameAnswer(${j})">${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="g-fb"></div>
+      <div style="margin-top: 14px; text-align: right;" id="g-next" class="hidden">
+        <button class="btn btn-primary" onclick="nextGameQ()">Next ▶</button>
+      </div>
+    </div>`;
+}
+function gameAnswer(sel) {
+  if (gameAnswered) return; gameAnswered = true;
+  const q = gameQs[gameIdx];
+  const opts = document.querySelectorAll('#g-opts .option-btn');
+  opts.forEach(b => b.disabled = true);
+  opts[q.ans].classList.add('correct');
+  const fb = document.getElementById('g-fb');
+  if (sel === q.ans) { gameScore += 10; gameCorrect++; document.getElementById('live-score').textContent = gameScore; fb.textContent = '✅ Correct! +10 points!'; fb.className = 'feedback show correct-fb'; }
+  else { opts[sel].classList.add('wrong'); fb.textContent = `❌ Wrong! Answer: "${q.opts[q.ans]}"`; fb.className = 'feedback show wrong-fb'; }
+  document.getElementById('g-next').classList.remove('hidden');
+}
+function nextGameQ() { gameIdx++; loadGameQ(); }
+function endGame() {
+  document.getElementById('game-play').classList.add('hidden');
+  document.getElementById('game-results').classList.remove('hidden');
+  document.getElementById('progress-fill').style.width = '100%';
+  document.getElementById('res-score').textContent = gameScore + ' pts';
+  document.getElementById('res-sub').textContent = `You got ${gameCorrect} out of 15 correct!`;
+  let emoji, msg;
+  if (gameCorrect >= 13) { emoji = '🏆'; msg = 'Amazing! City Expert!'; }
+  else if (gameCorrect >= 10) { emoji = '🌟'; msg = 'Great job! Well done!'; }
+  else if (gameCorrect >= 7) { emoji = '🙂'; msg = 'Good try! Practice more!'; }
+  else { emoji = '🚌'; msg = "Don't give up! Try again!"; }
+  document.getElementById('res-emoji').textContent = emoji;
+  document.getElementById('res-msg').textContent = msg;
+}
+
+// ===== VOCABULARY =====
+const vocabData = {
+  places: [
+    ['museum','müze'], ['library','kütüphane'], ['café','kafe'], ['park','park'],
+    ['cinema','sinema'], ['hospital','hastane'], ['bookshop','kitapçı'], ['bank','banka'],
+    ['bus stop','otobüs durağı'], ['bakery','fırın'], ['police station','karakol'],
+    ['city centre','şehir merkezi'], ['playground','oyun parkı'], ['art gallery','sanat galerisi'],
+  ],
+  transport: [
+    ['bus','otobüs'], ['tram','tramvay'], ['underground','metro'], ['train','tren'],
+    ['aeroplane','uçak'], ['ship','gemi'], ['taxi','taksi'], ['car','araba'],
+    ['motorbike','motosiklet'], ['boat','tekne'], ['coach','tur otobüsü'], ['lorry','kamyon'],
+  ],
+  prepositions: [
+    ['in','içinde'], ['on','üstünde'], ['under','altında'], ['next to','yanında'],
+    ['behind','arkasında'], ['in front of','önünde'], ['between','arasında'],
+    ['near','yakınında'], ['opposite','karşısında'], ['over','üstünde (temas yok)'],
+    ['across','karşıdan karşıya'], ['through','içinden'],
+  ],
+  time: [
+    ['yesterday','dün'], ['last night','dün gece'], ['last week','geçen hafta'],
+    ['last month','geçen ay'], ['two days ago','iki gün önce'], ['five years ago','beş yıl önce'],
+    ['yesterday morning','dün sabah'], ['yesterday evening','dün akşam'],
+    ['before','önce'], ['after','sonra'],
+  ]
+};
+function initVocab() {
+  const keys = { places: 'vocab-places', transport: 'vocab-transport', prepositions: 'vocab-prepositions', time: 'vocab-time' };
+  Object.keys(keys).forEach(k => {
+    const el = document.getElementById(keys[k]);
+    if (!el || el.innerHTML) return;
+    el.innerHTML = vocabData[k].map(([en, tr]) => `<div class="vocab-item"><div class="vocab-en">${en}</div><div class="vocab-tr">${tr}</div></div>`).join('');
+  });
+}
+
+// ===== CITY MAP =====
+const cityPlaces = [
+  { icon: '🏛️', name: 'Museum', prep: 'next to the library', street: 'High Street' },
+  { icon: '📚', name: 'Library', prep: 'opposite the park', street: 'King Road' },
+  { icon: '☕', name: 'Café', prep: 'between the park and the cinema', street: 'Star Road' },
+  { icon: '🎬', name: 'Cinema', prep: 'opposite the bus stop', street: 'Star Road' },
+  { icon: '🌳', name: 'Park', prep: 'next to the café', street: 'Star Road' },
+  { icon: '🏥', name: 'Hospital', prep: 'behind the school', street: 'King Road' },
+  { icon: '🚌', name: 'Bus Stop', prep: 'opposite the cinema', street: 'High Street' },
+  { icon: '🏦', name: 'Bank', prep: 'between the cinema and the grocery', street: 'High Street' },
+];
+const mapQuizData = [
+  { q: 'The café is ___ the park and the cinema.', opts: ['next to', 'behind', 'between', 'in front of'], ans: 2 },
+  { q: 'The bus stop is ___ the cinema.', opts: ['under', 'opposite', 'in', 'near'], ans: 1 },
+  { q: 'The library is ___ the house.', opts: ['over', 'between', 'near', 'on'], ans: 2 },
+  { q: 'The dog is ___ the doghouse.', opts: ['on', 'over', 'opposite', 'in'], ans: 3 },
+  { q: 'The school is ___ the pharmacy.', opts: ['opposite', 'next to', 'behind', 'in front of'], ans: 2 },
+];
+let mapInited = false;
+function initMap() {
+  if (mapInited) return; mapInited = true;
+  const grid = document.getElementById('map-grid');
+  cityPlaces.forEach((p, i) => {
+    const div = document.createElement('div');
+    div.className = 'map-place';
+    div.innerHTML = `<span class="icon">${p.icon}</span>${p.name}`;
+    div.onclick = () => {
+      document.getElementById('map-info').innerHTML = `
+        <b>${p.icon} ${p.name}</b><br>
+        📍 It is <b>${p.prep}</b>.<br>
+        🛣️ It is on <b>${p.street}</b>.`;
+    };
+    grid.appendChild(div);
+  });
+  const qc = document.getElementById('map-quiz');
+  mapQuizData.forEach((q, i) => {
+    const div = document.createElement('div'); div.className = 'question-card'; div.style.marginBottom = '12px';
+    div.innerHTML = `
+      <div class="question-num">Map Quiz · ${i+1}/${mapQuizData.length}</div>
+      <div class="question-text" style="font-size: 15px;">${q.q}</div>
+      <div class="options" id="mq-opts-${i}">
+        ${q.opts.map((o, j) => `<button class="option-btn" onclick="checkMapQ(${i},${j})">${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="mq-fb-${i}"></div>`;
+    qc.appendChild(div);
+  });
+}
+function checkMapQ(qi, sel) {
+  const q = mapQuizData[qi];
+  const opts = document.querySelectorAll(`#mq-opts-${qi} .option-btn`);
+  opts.forEach(b => b.disabled = true);
+  opts[q.ans].classList.add('correct');
+  const fb = document.getElementById('mq-fb-' + qi);
+  if (sel === q.ans) { fb.textContent = '✅ Correct!'; fb.className = 'feedback show correct-fb'; }
+  else { opts[sel].classList.add('wrong'); fb.textContent = `❌ Answer: "${q.opts[q.ans]}"`; fb.className = 'feedback show wrong-fb'; }
+}
+
+// Init MC on load
+initMC(); initFill(); initBuilder();
+</script>
+</body>
+</html>

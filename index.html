@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5. Sınıf İngilizce - Tüm Üniteler</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #1a1a2e;
+        }
+
+        .main-tabs {
+            background: #0f0f1a;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 4px;
+            padding: 12px;
+            border-bottom: 2px solid #2d2d44;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .main-tab-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            background: #2d2d44;
+            color: #e2e8f0;
+            transition: all 0.3s;
+        }
+
+        .main-tab-btn:hover {
+            background: #4a4a6a;
+            transform: translateY(-2px);
+        }
+
+        .main-tab-btn.active {
+            background: linear-gradient(135deg, #f59e0b, #ec4899);
+            color: white;
+        }
+
+        .unit-iframe {
+            width: 100%;
+            height: calc(100vh - 70px);
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-tabs">
+        <button class="main-tab-btn active" onclick="switchUnit('life_in_the_world_theme6_app.html')">🌍 Life in the World</button>
+        <button class="main-tab-btn" onclick="switchUnit('neighbourhood_city_app.html')">🏘️ Neighbourhood & City</button>
+        <button class="main-tab-btn" onclick="switchUnit('life_in_nature_5th_grade.html')">🌿 Life in Nature</button>
+        <button class="main-tab-btn" onclick="switchUnit('life_in_the_universe_app.html')">🚀 Life in the Universe</button>
+    </div>
+
+    <iframe id="mainFrame" class="unit-iframe" src="life_in_the_world_theme6_app.html"></iframe>
+
+    <script>
+        function switchUnit(fileName) {
+            document.getElementById('mainFrame').src = fileName;
+            
+            document.querySelectorAll('.main-tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
