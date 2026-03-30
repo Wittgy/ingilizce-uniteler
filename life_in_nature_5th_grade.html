@@ -286,6 +286,16 @@
   }
   .next-btn.show { display: inline-block; }
   .next-btn:hover { background: var(--blue-mid); color: white; }
+  .opt-btn {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.opt-btn:hover {
+  transform: scale(1.05);
+  background: #d0ebff;
+}
+
 
   /* ── FEEDBACK ── */
   .feedback {
@@ -467,7 +477,6 @@
 </div>
 
 <script>
-document.body.style.cursor = 'pointer';
 
 // ════════════════════════════════════════
 //  QUESTION BANK
