@@ -467,6 +467,8 @@
 </div>
 
 <script>
+document.body.style.cursor = 'pointer';
+
 // ════════════════════════════════════════
 //  QUESTION BANK
 // ════════════════════════════════════════
@@ -558,7 +560,7 @@ function shuffle(arr) {
   return a;
 }
 
-const gameQuestions = shuffle([...QUESTIONS]);
+const gameQuestions = shuffle(QUESTIONS.filter(q => q.type === 'mc'));
 
 // ════════════════════════════════════════
 //  NAVIGATION
@@ -613,17 +615,17 @@ function renderPractice() {
       <div class="q-text">${q.q}</div>`;
 
   if (q.type === 'mc') {
-    html += `<div class="options">`;
+    html += `<div class="options" id="options-practice-${practiceIdx}">`;
     q.opts.forEach((o, i) => {
-      html += `<button class="opt-btn" onclick="checkMC(this,'practice',${i},${q.ans},${JSON.stringify(q.exp).replace(/</g,'&lt;')})">${o}</button>`;
+      html += `<button class="opt-btn" onclick="checkMC(${i},'practice',${practiceIdx})">${o}</button>`;
     });
     html += `</div>`;
   } else if (q.type === 'fill') {
     html += `<div>
       <input type="text" class="fill-input" id="fill-input-p" placeholder="Type your answer…" autocomplete="off"
-        onkeydown="if(event.key==='Enter')checkFill('practice','${q.blank.replace(/'/g,"\\'")}','${(q.hint||'').replace(/'/g,"\\'")}')">
+        onkeydown="if(event.key==='Enter')checkFill('practice',${practiceIdx})">
       <br>
-      <button class="check-btn" id="check-fill-p" onclick="checkFill('practice','${q.blank.replace(/'/g,"\\'")}','${(q.hint||'').replace(/'/g,"\\'")}')">Check ✓</button>
+      <button class="check-btn" id="check-fill-p" onclick="checkFill('practice',${practiceIdx})">Check ✓</button>
     </div>`;
   } else if (q.type === 'build') {
     currentMode = 'practice';
@@ -633,7 +635,7 @@ function renderPractice() {
     remainArr.forEach((w, i) => chipMap[i] = w);
     html += `<div class="builder-area" id="builder-area">${buildAreaHTML()}</div>
       <div class="word-pool" id="word-pool">${remainArr.map((w, i) => `<span class="word-chip" id="chip-${i}" onclick="addWord('${i}')">${w}</span>`).join('')}</div>
-      <button class="check-btn" id="check-build-p" onclick="checkBuild('practice','${q.answer.replace(/'/g,"\\'")}')">Check ✓</button>`;
+      <button class="check-btn" id="check-build-p" onclick="checkBuild('practice',${practiceIdx})">Check ✓</button>`;
   }
 
   html += `<div class="feedback" id="feedback-main"></div>
@@ -680,17 +682,17 @@ function renderGame() {
       <div class="q-text">${q.q}</div>`;
 
   if (q.type === 'mc') {
-    html += `<div class="options">`;
+    html += `<div class="options" id="options-game-${gameIdx}">`;
     q.opts.forEach((o, i) => {
-      html += `<button class="opt-btn" onclick="checkMC(this,'game',${i},${q.ans},${JSON.stringify(q.exp||'').replace(/</g,'&lt;')})">${o}</button>`;
+      html += `<button class="opt-btn" onclick="checkMC(${i},'game',${gameIdx})">${o}</button>`;
     });
     html += `</div>`;
   } else if (q.type === 'fill') {
     html += `<div>
       <input type="text" class="fill-input" id="fill-input-g" placeholder="Type your answer…" autocomplete="off"
-        onkeydown="if(event.key==='Enter')checkFill('game','${q.blank.replace(/'/g,"\\'")}','${(q.hint||'').replace(/'/g,"\\'")}')">
+        onkeydown="if(event.key==='Enter')checkFill('game',${gameIdx})">
       <br>
-      <button class="check-btn" id="check-fill-g" onclick="checkFill('game','${q.blank.replace(/'/g,"\\'")}','${(q.hint||'').replace(/'/g,"\\'")}')">Check ✓</button>
+      <button class="check-btn" id="check-fill-g" onclick="checkFill('game',${gameIdx})">Check ✓</button>
     </div>`;
   } else if (q.type === 'build') {
     currentMode = 'game';
@@ -700,7 +702,7 @@ function renderGame() {
     remainArr.forEach((w, i) => chipMap[i] = w);
     html += `<div class="builder-area" id="builder-area">${buildAreaHTML()}</div>
       <div class="word-pool" id="word-pool">${remainArr.map((w, i) => `<span class="word-chip" id="chip-${i}" onclick="addWord('${i}')">${w}</span>`).join('')}</div>
-      <button class="check-btn" id="check-build-g" onclick="checkBuild('game','${q.answer.replace(/'/g,"\\'")}')">Check ✓</button>`;
+      <button class="check-btn" id="check-build-g" onclick="checkBuild('game',${gameIdx})">Check ✓</button>`;
   }
 
   html += `<div class="feedback" id="feedback-main"></div>
@@ -712,34 +714,54 @@ function renderGame() {
 // ════════════════════════════════════════
 //  ANSWER CHECKERS
 // ════════════════════════════════════════
-function checkMC(btn, mode, chosen, correct, exp) {
-  const btns = btn.closest('.options').querySelectorAll('.opt-btn');
+function checkMC(chosen, mode, qIdx) {
+  const questions = mode === 'practice' ? QUESTIONS : gameQuestions;
+  const q = questions[qIdx];
+  const correct = q.ans;
+
+  const btns = document.querySelectorAll('.opt-btn');
   btns.forEach((b, i) => {
     b.disabled = true;
     if (i === correct) b.classList.add('correct');
     else if (i === chosen && chosen !== correct) b.classList.add('wrong');
   });
+
   const fb = document.getElementById('feedback-main');
-  const next = document.getElementById('next-btn-main');
+
   if (chosen === correct) {
     fb.className = 'feedback show good';
-    fb.innerHTML = '✅ Correct! ' + exp;
+    fb.innerHTML = '✅ Correct!';
     if (mode === 'practice') practiceScore++;
     else { gameScore++; gameStreak++; }
   } else {
     fb.className = 'feedback show bad';
-    fb.innerHTML = '❌ Not quite. ' + exp;
+    fb.innerHTML = '❌ Wrong!';
     if (mode === 'game') gameStreak = 0;
   }
-  next.classList.add('show');
+
+  // 🎮 GAME MODE → AUTO NEXT
+  if (mode === 'game') {
+    setTimeout(() => {
+      gameIdx++;
+      renderGame();
+    }, 800);
+  } else {
+    const next = document.getElementById('next-btn-main');
+    next.classList.add('show');
+  }
 }
 
-function checkFill(mode, correct, hint) {
+
+function checkFill(mode, qIdx) {
+  const questions = mode === 'practice' ? QUESTIONS : gameQuestions;
+  const q = questions[qIdx];
+  const correct = q.blank;
+  const hint = q.hint || '';
   const inputId = mode === 'practice' ? 'fill-input-p' : 'fill-input-g';
   const inp = document.getElementById(inputId);
   if (!inp) return;
-  const val = inp.value.trim().toLowerCase().replace(/'/g, "'");
-  const correctNorm = correct.toLowerCase().replace(/'/g, "'");
+  const val = inp.value.trim().toLowerCase().replace(/\u2019/g, "'");
+  const correctNorm = correct.toLowerCase().replace(/\u2019/g, "'");
   const fb = document.getElementById('feedback-main');
   const next = document.getElementById('next-btn-main');
   inp.disabled = true;
@@ -785,7 +807,9 @@ function removeWord(builtIdx) {
   }
 }
 
-function checkBuild(mode, correctAnswer) {
+function checkBuild(mode, qIdx) {
+  const questions = mode === 'practice' ? QUESTIONS : gameQuestions;
+  const correctAnswer = questions[qIdx].answer;
   const built = builtArr.map(item => item.word).join(' ');
   const fb = document.getElementById('feedback-main');
   const next = document.getElementById('next-btn-main');
