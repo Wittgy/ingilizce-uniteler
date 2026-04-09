@@ -56,6 +56,44 @@
             height: calc(100vh - 70px);
             border: none;
         }
+
+         .main-tab-btn {
+    position: relative;
+}
+
+/* Badge görünümü */
+.badge {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: linear-gradient(45deg, #ff416c, #ff4b2b);
+    color: white;
+    font-size: 9px;
+    padding: 3px 7px;
+    border-radius: 12px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+
+    /* Animasyon */
+    animation: pulse 1.5s infinite;
+}
+
+/* Pulse efekti */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 75, 43, 0.7);
+    }
+    70% {
+        transform: scale(1.1);
+        box-shadow: 0 0 8px 6px rgba(255, 75, 43, 0);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 75, 43, 0);
+    }
+}
+
     </style>
 </head>
 <body>
@@ -65,6 +103,10 @@
         <button class="main-tab-btn" onclick="switchUnit('life_in_nature_5th_grade.html')">🌿 Life in Nature</button>
         <button class="main-tab-btn" onclick="switchUnit('life_in_the_universe_app.html')">🚀 Life in the Universe</button>
         <button class="main-tab-btn new-badge" onclick="switchUnit('theme9-school-life.html')">
+    🏫 School and Education
+    <span class="badge">NEW</span>
+</button>
+
     🏫 School and Education
     <span class="badge">NEW</span>
 </button>
