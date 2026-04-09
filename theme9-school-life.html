@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5th Grade – Theme 9: School Life & Education</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sky: #0e90de;
+  --sky-lt: #dbeeff;
+  --sky-2: #b8deff;
+  --sky-d: #005c96;
+  --teal: #14b8a6;
+  --teal-lt: #d4f4f0;
+  --coral: #ff6b52;
+  --coral-lt: #ffe8e3;
+  --amber: #f59e0b;
+  --amber-lt: #fef3c7;
+  --green: #22c55e;
+  --green-lt: #dcfce7;
+  --green-d: #15803d;
+  --red: #ef4444;
+  --red-lt: #fee2e2;
+  --red-d: #b91c1c;
+  --bg: #f0f7ff;
+  --surface: #ffffff;
+  --border: #d4e6f7;
+  --text: #1a2a3a;
+  --text-sec: #3d5a73;
+  --text-muted: #7a9ab5;
+  --r: 14px;
+  --r-lg: 20px;
+  --r-full: 999px;
+  --shadow: 0 2px 12px rgba(14,80,140,.08), 0 6px 24px rgba(14,80,140,.06);
+  --shadow-lg: 0 6px 30px rgba(14,80,140,.14), 0 16px 48px rgba(14,80,140,.10);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth}
+body{
+  font-family:'Nunito',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  background-image:radial-gradient(circle,#c5def7 1px,transparent 1px);
+  background-size:28px 28px;
+}
+
+/* ── TOP HEADER ── */
+.site-header{
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  padding:1rem 2rem;
+  position:sticky;top:0;z-index:100;
+  box-shadow:var(--shadow);
+  display:flex;align-items:center;gap:1rem;
+}
+.site-header .logo{
+  width:44px;height:44px;
+  background:linear-gradient(135deg,#38a8f0,#14b8a6);
+  border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.4rem;flex-shrink:0;
+  box-shadow:0 3px 10px rgba(14,144,222,.35);
+}
+.site-header h1{font-size:1.1rem;font-weight:900;color:var(--sky-d);letter-spacing:-.02em;line-height:1.2}
+.site-header p{font-size:.78rem;color:var(--text-muted);font-weight:600}
+
+/* ── NAV TABS ── */
+.nav-tabs{
+  background:rgba(255,255,255,.85);
+  border-bottom:1px solid var(--border);
+  display:flex;gap:.25rem;padding:.6rem 1.5rem;
+  overflow-x:auto;white-space:nowrap;
+  position:sticky;top:77px;z-index:90;
+  backdrop-filter:blur(10px);
+}
+.nav-tabs::-webkit-scrollbar{display:none}
+.tab-btn{
+  padding:.45rem 1.1rem;border-radius:var(--r-full);
+  font-family:'Nunito',sans-serif;font-size:.85rem;font-weight:700;
+  border:none;cursor:pointer;transition:all .2s;
+  background:transparent;color:var(--text-muted);
+}
+.tab-btn:hover{background:var(--sky-lt);color:var(--sky)}
+.tab-btn.active{background:linear-gradient(135deg,var(--sky),#0074bb);color:#fff;box-shadow:0 3px 10px rgba(14,144,222,.35)}
+
+/* ── MAIN CONTENT ── */
+.main{max-width:1100px;margin:0 auto;padding:2rem 1.5rem}
+.section{display:none;animation:fadeUp .4s ease}
+.section.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── SECTION TITLES ── */
+.section-hero{
+  background:linear-gradient(135deg,var(--sky),var(--teal));
+  border-radius:var(--r-lg);
+  padding:1.75rem 2rem;
+  margin-bottom:2rem;
+  color:#fff;
+  display:flex;align-items:center;gap:1rem;
+}
+.section-hero .hero-icon{font-size:2.5rem}
+.section-hero h2{font-size:1.5rem;font-weight:900;letter-spacing:-.03em}
+.section-hero p{font-size:.9rem;opacity:.9;margin-top:.2rem}
+
+/* ── CARDS ── */
+.card{
+  background:var(--surface);
+  border:1.5px solid var(--border);
+  border-radius:var(--r-lg);
+  padding:1.5rem;
+  box-shadow:var(--shadow);
+  margin-bottom:1.25rem;
+}
+.card-title{font-size:1rem;font-weight:800;margin-bottom:1rem;color:var(--text);display:flex;align-items:center;gap:.5rem}
+.card-title .ct-icon{
+  width:30px;height:30px;background:var(--sky-lt);border-radius:8px;
+  display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0
+}
+
+/* ── VOCABULARY GRID ── */
+.vocab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.75rem}
+.vocab-item{
+  background:var(--sky-lt);
+  border:1.5px solid var(--sky-2);
+  border-radius:var(--r);
+  padding:.75rem 1rem;
+  cursor:pointer;
+  transition:all .2s;
+  position:relative;overflow:hidden;
+}
+.vocab-item:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(14,144,222,.2);border-color:var(--sky)}
+.vocab-item .en{font-size:.95rem;font-weight:800;color:var(--sky-d)}
+.vocab-item .tr{font-size:.82rem;color:var(--text-sec);margin-top:.15rem;font-weight:600}
+.vocab-item .cat-tag{
+  position:absolute;top:.4rem;right:.4rem;
+  font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;
+  background:var(--sky);color:#fff;padding:.1rem .4rem;border-radius:var(--r-full);
+}
+
+/* ── SUBJECT PILLS ── */
+.subject-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.6rem}
+.subject-pill{
+  padding:.65rem 1rem;border-radius:var(--r);
+  display:flex;align-items:center;gap:.5rem;font-weight:700;font-size:.85rem;
+  border:1.5px solid;cursor:default;
+}
+.sp-blue{background:#eff6ff;border-color:#bfdbfe;color:#1d4ed8}
+.sp-green{background:#f0fdf4;border-color:#bbf7d0;color:#15803d}
+.sp-amber{background:#fffbeb;border-color:#fde68a;color:#92400e}
+.sp-red{background:#fff1f2;border-color:#fecdd3;color:#9f1239}
+.sp-purple{background:#faf5ff;border-color:#e9d5ff;color:#6b21a8}
+.sp-teal{background:#f0fdfa;border-color:#99f6e4;color:#0f766e}
+
+/* ── CLUB CARDS ── */
+.clubs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:.75rem}
+.club-card{
+  background:var(--surface);
+  border:1.5px solid var(--border);
+  border-radius:var(--r);
+  padding:1rem;
+  text-align:center;
+  transition:all .2s;cursor:default;
+}
+.club-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:var(--sky)}
+.club-card .club-icon{font-size:1.8rem;margin-bottom:.4rem}
+.club-card .club-name{font-size:.82rem;font-weight:800;color:var(--text)}
+.club-card .club-tr{font-size:.74rem;color:var(--text-muted);font-weight:600;margin-top:.15rem}
+
+/* ── PASSIVE VOICE ── */
+.grammar-box{
+  background:linear-gradient(135deg,var(--sky-lt),var(--teal-lt));
+  border:1.5px solid var(--sky-2);
+  border-radius:var(--r-lg);
+  padding:1.5rem;margin-bottom:1.25rem;
+}
+.formula{
+  background:#fff;
+  border:2px solid var(--sky);
+  border-radius:var(--r);
+  padding:1rem 1.5rem;
+  font-size:1.2rem;font-weight:900;
+  color:var(--sky-d);
+  text-align:center;
+  letter-spacing:.02em;
+  margin:1rem 0;
+  font-family:'DM Mono',monospace;
+}
+.compare-table{width:100%;border-collapse:collapse;font-size:.9rem}
+.compare-table th{
+  background:var(--sky-lt);
+  padding:.75rem 1rem;
+  font-weight:800;
+  font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;
+  color:var(--sky-d);border-bottom:2px solid var(--sky-2);
+  text-align:left;
+}
+.compare-table td{padding:.7rem 1rem;border-bottom:1px solid var(--border);vertical-align:middle}
+.compare-table tr:hover td{background:var(--sky-lt)}
+.compare-table tr:last-child td{border-bottom:none}
+.active-badge{background:var(--amber-lt);color:#92400e;padding:.15rem .6rem;border-radius:var(--r-full);font-size:.74rem;font-weight:800}
+.passive-badge{background:var(--teal-lt);color:#0f766e;padding:.15rem .6rem;border-radius:var(--r-full);font-size:.74rem;font-weight:800}
+
+/* ── VERB TABLE ── */
+.verb-table-wrap{overflow-x:auto;border-radius:var(--r-lg);border:1.5px solid var(--border)}
+.verb-table{width:100%;border-collapse:collapse;font-size:.88rem}
+.verb-table th{
+  background:linear-gradient(135deg,var(--sky),#0074bb);
+  color:#fff;padding:.75rem 1rem;
+  text-align:left;font-weight:800;font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;
+}
+.verb-table td{padding:.65rem 1rem;border-bottom:1px solid var(--border)}
+.verb-table tr:hover td{background:var(--sky-lt)}
+.verb-table tr:last-child td{border-bottom:none}
+.verb-table .v1{font-weight:800;color:var(--sky-d)}
+.verb-table .example{font-size:.78rem;color:var(--text-muted);font-style:italic}
+.irregular-tag{background:var(--coral-lt);color:#9f3224;padding:.1rem .45rem;border-radius:var(--r-full);font-size:.65rem;font-weight:800}
+.regular-tag{background:var(--green-lt);color:var(--green-d);padding:.1rem .45rem;border-radius:var(--r-full);font-size:.65rem;font-weight:800}
+
+/* ── QUIZ ENGINE ── */
+.quiz-wrap{max-width:760px;margin:0 auto}
+.quiz-meta{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:var(--r-lg);padding:1rem 1.5rem;
+  margin-bottom:1.25rem;box-shadow:var(--shadow);
+  flex-wrap:wrap;gap:.75rem;
+}
+.qmeta-title{font-weight:900;font-size:1rem;color:var(--text)}
+.score-badge{
+  background:linear-gradient(135deg,var(--sky),var(--teal));
+  color:#fff;padding:.3rem .9rem;border-radius:var(--r-full);
+  font-weight:800;font-size:.88rem;
+  font-family:'DM Mono',monospace;
+}
+.progress-bar-wrap{background:var(--sky-lt);border-radius:var(--r-full);height:7px;overflow:hidden;flex:1;min-width:120px}
+.progress-bar{background:linear-gradient(90deg,var(--sky),var(--teal));height:100%;border-radius:var(--r-full);transition:width .5s ease}
+
+.q-card{
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:var(--r-lg);padding:1.75rem;
+  box-shadow:var(--shadow);margin-bottom:1.25rem;
+}
+.q-header{display:flex;align-items:center;gap:.75rem;margin-bottom:1rem}
+.q-num-pill{background:var(--sky-lt);color:var(--sky-d);padding:.2rem .7rem;border-radius:var(--r-full);font-size:.74rem;font-weight:800;text-transform:uppercase}
+.q-topic-pill{background:var(--teal-lt);color:#0f766e;padding:.2rem .7rem;border-radius:var(--r-full);font-size:.74rem;font-weight:800}
+.q-text{font-size:1.05rem;font-weight:700;margin-bottom:1.1rem;line-height:1.55}
+.choices{display:flex;flex-direction:column;gap:.55rem}
+.choice-btn{
+  display:flex;align-items:center;gap:.85rem;
+  padding:.8rem 1.1rem;
+  border:2px solid var(--border);border-radius:var(--r);
+  background:var(--surface);cursor:pointer;
+  font-family:'Nunito',sans-serif;font-size:.92rem;font-weight:600;color:var(--text);
+  transition:all .15s;text-align:left;
+}
+.choice-btn:hover:not(:disabled){border-color:var(--sky);background:var(--sky-lt);transform:translateX(4px)}
+.choice-btn .choice-letter{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--sky-lt);color:var(--sky-d);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.78rem;font-weight:800;flex-shrink:0;
+  transition:background .15s;
+}
+.choice-btn:hover:not(:disabled) .choice-letter{background:var(--sky);color:#fff}
+.choice-btn.correct{border-color:var(--green);background:var(--green-lt);color:var(--green-d)}
+.choice-btn.correct .choice-letter{background:var(--green);color:#fff}
+.choice-btn.wrong{border-color:var(--red);background:var(--red-lt);color:var(--red-d)}
+.choice-btn.wrong .choice-letter{background:var(--red);color:#fff}
+.choice-btn.reveal{border-color:var(--green);background:var(--green-lt);color:var(--green-d)}
+.choice-btn.reveal .choice-letter{background:var(--green);color:#fff}
+.choice-btn:disabled{cursor:default}
+
+.feedback-box{
+  margin-top:.85rem;padding:.8rem 1rem;border-radius:var(--r);
+  font-size:.88rem;font-weight:600;border:1.5px solid;display:none;
+}
+.feedback-box.correct{background:var(--green-lt);border-color:#bbf7d0;color:var(--green-d)}
+.feedback-box.wrong{background:var(--red-lt);border-color:#fecaca;color:var(--red-d)}
+
+.quiz-nav{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-top:1rem}
+.btn{
+  padding:.6rem 1.4rem;border-radius:var(--r-full);
+  font-family:'Nunito',sans-serif;font-weight:700;font-size:.9rem;
+  border:none;cursor:pointer;transition:all .2s;text-decoration:none;
+  display:inline-flex;align-items:center;gap:.4rem;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:linear-gradient(135deg,var(--sky),#0074bb);color:#fff;box-shadow:0 3px 12px rgba(14,144,222,.35)}
+.btn-outline{background:var(--surface);border:1.5px solid var(--border);color:var(--text-sec)}
+.btn-outline:hover{border-color:var(--sky);color:var(--sky)}
+.btn-success{background:linear-gradient(135deg,var(--green),var(--green-d));color:#fff;box-shadow:0 3px 12px rgba(34,197,94,.3)}
+.btn-teal{background:linear-gradient(135deg,var(--teal),#0d7a6e);color:#fff;box-shadow:0 3px 12px rgba(20,184,166,.3)}
+
+/* ── RESULT SCREEN ── */
+.result-screen{
+  text-align:center;padding:2.5rem;
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:var(--r-lg);box-shadow:var(--shadow-lg);
+  display:none;
+}
+.result-screen.show{display:block;animation:fadeUp .5s ease}
+.result-score-big{font-size:5rem;font-weight:900;letter-spacing:-.05em;line-height:1}
+.result-screen .score-pass{color:var(--green-d)}
+.result-screen .score-fail{color:var(--red-d)}
+.result-screen .verdict{font-size:1.5rem;font-weight:900;margin:.5rem 0}
+.result-screen .result-sub{color:var(--text-muted);font-size:.9rem;margin-bottom:1.5rem;font-weight:600}
+.result-actions{display:flex;justify-content:center;gap:.75rem;flex-wrap:wrap}
+
+/* ── READING ── */
+.reading-text{
+  background:linear-gradient(135deg,var(--sky-lt),var(--teal-lt));
+  border:1.5px solid var(--sky-2);border-radius:var(--r-lg);
+  padding:1.75rem;margin-bottom:1.5rem;
+  line-height:1.8;font-size:.95rem;
+}
+.reading-text strong{color:var(--sky-d);font-weight:800}
+.vocab-box{
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:var(--r);padding:1.1rem;
+}
+.vocab-box-title{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--sky);margin-bottom:.65rem}
+.vocab-row{display:flex;justify-content:space-between;align-items:center;padding:.4rem 0;border-bottom:1px solid var(--border);font-size:.88rem}
+.vocab-row:last-child{border-bottom:none}
+.vocab-row .en{font-weight:700;color:var(--text)}
+.vocab-row .tr{color:var(--text-muted);font-weight:600}
+
+/* ── WORD QUIZ (drag/click) ── */
+.fill-quiz .fq-item{
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:var(--r);padding:1rem 1.25rem;
+  margin-bottom:.75rem;display:flex;align-items:center;gap:.75rem;font-size:.93rem;
+}
+.fill-quiz .fq-num{
+  width:26px;height:26px;background:var(--sky-lt);color:var(--sky-d);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:.75rem;font-weight:800;flex-shrink:0;
+}
+.fill-blank{
+  display:inline-block;
+  min-width:140px;padding:.3rem .6rem;
+  border-bottom:2px solid var(--sky);
+  background:var(--sky-lt);border-radius:6px 6px 0 0;
+  font-weight:700;color:var(--sky-d);font-size:.9rem;
+  cursor:pointer;transition:all .15s;text-align:center;
+}
+.fill-blank:hover{background:var(--sky-2)}
+.fill-blank.filled{background:var(--green-lt);border-color:var(--green);color:var(--green-d)}
+.fill-blank.wrong-fill{background:var(--red-lt);border-color:var(--red);color:var(--red-d)}
+.word-bank{
+  display:flex;flex-wrap:wrap;gap:.5rem;
+  padding:1rem;background:var(--sky-lt);border-radius:var(--r);margin-bottom:1rem;
+}
+.word-chip{
+  padding:.4rem .9rem;background:var(--surface);
+  border:1.5px solid var(--sky-2);border-radius:var(--r-full);
+  font-size:.85rem;font-weight:700;color:var(--sky-d);cursor:pointer;
+  transition:all .15s;user-select:none;
+}
+.word-chip:hover{background:var(--sky);color:#fff;border-color:var(--sky)}
+.word-chip.used{opacity:.3;pointer-events:none;text-decoration:line-through}
+
+/* ── SENTENCE ORDER ── */
+.order-quiz .oq-item{margin-bottom:1.25rem}
+.word-tokens{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.5rem;min-height:40px;padding:.5rem;background:var(--sky-lt);border-radius:var(--r);border:1.5px dashed var(--sky-2)}
+.token{
+  padding:.35rem .8rem;background:var(--surface);border:1.5px solid var(--sky-2);
+  border-radius:var(--r-full);font-size:.82rem;font-weight:700;color:var(--sky-d);
+  cursor:pointer;transition:all .15s;
+}
+.token:hover{background:var(--sky);color:#fff;border-color:var(--sky)}
+.answer-zone{
+  display:flex;flex-wrap:wrap;gap:.4rem;min-height:44px;
+  padding:.5rem;background:#fff;border:2px solid var(--border);
+  border-radius:var(--r);transition:border-color .2s;
+}
+.answer-zone.has-answer{border-color:var(--sky-2)}
+.answer-zone .token{background:var(--teal-lt);border-color:var(--teal);color:#0f766e}
+.answer-zone .token:hover{background:var(--red-lt);border-color:var(--red);color:var(--red-d)}
+.oq-check{display:none;font-size:.82rem;font-weight:700;margin-top:.35rem;padding:.35rem .75rem;border-radius:var(--r-sm);display:inline-block}
+.oq-correct{background:var(--green-lt);color:var(--green-d)}
+.oq-wrong{background:var(--red-lt);color:var(--red-d)}
+
+/* ── VERB QUIZ ── */
+.vq-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}
+.vq-card{
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:var(--r);padding:1rem;
+}
+.vq-card .vq-en{font-size:1rem;font-weight:800;color:var(--sky-d);margin-bottom:.6rem}
+.vq-card .vq-row{display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem}
+.vq-card .vq-label{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);width:30px}
+.vq-card input{
+  flex:1;padding:.35rem .65rem;border:1.5px solid var(--border);border-radius:6px;
+  font-family:'Nunito',sans-serif;font-size:.85rem;font-weight:600;color:var(--text);
+  outline:none;transition:border-color .15s;
+}
+.vq-card input:focus{border-color:var(--sky);box-shadow:0 0 0 3px rgba(56,168,240,.12)}
+.vq-card input.v-correct{background:var(--green-lt);border-color:var(--green);color:var(--green-d)}
+.vq-card input.v-wrong{background:var(--red-lt);border-color:var(--red);color:var(--red-d)}
+.vq-card .vq-tr{font-size:.78rem;color:var(--text-muted);font-weight:600;margin-top:.2rem;padding:.2rem .4rem;background:var(--sky-lt);border-radius:4px;display:inline-block}
+
+/* ── BADGES / MISC ── */
+.badge{display:inline-flex;align-items:center;padding:.18rem .65rem;border-radius:var(--r-full);font-size:.74rem;font-weight:800}
+.badge-sky{background:var(--sky-lt);color:var(--sky-d)}
+.badge-teal{background:var(--teal-lt);color:#0f766e}
+.badge-coral{background:var(--coral-lt);color:#9f3224}
+.tip-box{
+  background:linear-gradient(135deg,#fff8e1,#fef3c7);
+  border:1.5px solid #fde68a;border-radius:var(--r);padding:1rem 1.25rem;
+  font-size:.88rem;color:#78350f;font-weight:600;margin:.75rem 0;
+}
+.tip-box::before{content:'💡 ';font-size:1rem}
+.section-label{font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:var(--sky);margin-bottom:.75rem}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:640px){.grid-2{grid-template-columns:1fr}}
+.divider{height:1px;background:var(--border);margin:1.5rem 0}
+
+/* ── CHECK ALL BTN ── */
+.check-all-btn{
+  display:block;width:100%;padding:.85rem;
+  background:linear-gradient(135deg,var(--sky),var(--teal));
+  color:#fff;border:none;border-radius:var(--r);
+  font-family:'Nunito',sans-serif;font-size:1rem;font-weight:800;
+  cursor:pointer;transition:all .2s;margin-top:1rem;
+  box-shadow:0 3px 12px rgba(14,144,222,.3);
+}
+.check-all-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(14,144,222,.4)}
+
+/* ── SCROLL TOP ── */
+.scroll-top{
+  position:fixed;bottom:1.5rem;right:1.5rem;
+  width:44px;height:44px;border-radius:50%;
+  background:linear-gradient(135deg,var(--sky),var(--teal));
+  color:#fff;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;
+  box-shadow:0 4px 14px rgba(14,144,222,.4);
+  transition:all .2s;opacity:0;pointer-events:none;
+}
+.scroll-top.show{opacity:1;pointer-events:auto}
+.scroll-top:hover{transform:translateY(-3px)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:640px){
+  .main{padding:1.25rem 1rem}
+  .nav-tabs{padding:.5rem .75rem}
+  .section-hero{padding:1.25rem}
+  .section-hero h2{font-size:1.2rem}
+  .verb-table{font-size:.78rem}
+  .verb-table td,.verb-table th{padding:.5rem .6rem}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="logo">🎓</div>
+  <div>
+    <h1>Theme 9 – School Life &amp; Education</h1>
+    <p>5th Grade · Çoklu Yabancı Dil Modeli · Interactive Learning App</p>
+  </div>
+</header>
+
+<nav class="nav-tabs" id="mainTabs">
+  <button class="tab-btn active" onclick="showSection('vocab',this)">📚 Vocabulary</button>
+  <button class="tab-btn" onclick="showSection('grammar',this)">📝 Passive Voice</button>
+  <button class="tab-btn" onclick="showSection('verbs',this)">🔠 Verb List</button>
+  <button class="tab-btn" onclick="showSection('reading',this)">📖 Reading</button>
+  <button class="tab-btn" onclick="showSection('quiz1',this)">🧪 Grammar Quiz</button>
+  <button class="tab-btn" onclick="showSection('quiz2',this)">📝 Fill Quiz</button>
+  <button class="tab-btn" onclick="showSection('order',this)">🔀 Order Quiz</button>
+  <button class="tab-btn" onclick="showSection('verbquiz',this)">⚡ Verb Quiz</button>
+  <button class="tab-btn" onclick="showSection('wordquiz',this)">🎯 Word Quiz</button>
+</nav>
+
+<main class="main">
+
+<!-- ═══════ VOCABULARY ═══════ -->
+<div id="vocab" class="section active">
+  <div class="section-hero">
+    <div class="hero-icon">📚</div>
+    <div>
+      <h2>Vocabulary Bank</h2>
+      <p>All key words for Theme 9 — click any card to highlight it</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><div class="ct-icon">🏫</div> General School &amp; Education</div>
+    <div class="vocab-grid" id="vg-general"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><div class="ct-icon">🚪</div> School Facilities &amp; Places</div>
+    <div class="vocab-grid" id="vg-places"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><div class="ct-icon">🏛️</div> Types of Schools</div>
+    <div class="vocab-grid" id="vg-schools"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><div class="ct-icon">🔬</div> School Clubs</div>
+    <div class="clubs-grid" id="clubs-grid"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><div class="ct-icon">📐</div> School Subjects</div>
+    <div class="subject-grid" id="subjects-grid"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><div class="ct-icon">🏃</div> Sports &amp; Arts Activities</div>
+    <div class="vocab-grid" id="vg-sports"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><div class="ct-icon">📖</div> Learning &amp; Academic Verbs</div>
+    <div class="vocab-grid" id="vg-verbs"></div>
+  </div>
+</div>
+
+<!-- ═══════ GRAMMAR ═══════ -->
+<div id="grammar" class="section">
+  <div class="section-hero">
+    <div class="hero-icon">📝</div>
+    <div>
+      <h2>The Passive Voice</h2>
+      <p>Edilgen Çatı — is/are + V3</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><div class="ct-icon">💡</div> What is Passive Voice?</div>
+    <p style="font-size:.93rem;line-height:1.7;color:var(--text-sec);margin-bottom:.75rem">
+      Sometimes <strong>who did the action is not important</strong> — what matters is <strong>what was done</strong>. In these cases, we use the <strong>Passive Voice</strong>.
+    </p>
+    <div class="grammar-box">
+      <div class="grid-2">
+        <div>
+          <div class="section-label">Active (Etken)</div>
+          <div style="background:#fff;border-radius:var(--r);padding:.9rem 1rem;border:1.5px solid var(--border)">
+            <span class="badge badge-coral" style="margin-bottom:.4rem;display:inline-block">Subject does the action</span><br>
+            <strong style="color:var(--coral)">Teachers</strong> organise competitions.<br>
+            <span style="font-size:.8rem;color:var(--text-muted)">Öğretmenler yarışmaları düzenler.</span>
+          </div>
+        </div>
+        <div>
+          <div class="section-label">Passive (Edilgen)</div>
+          <div style="background:#fff;border-radius:var(--r);padding:.9rem 1rem;border:1.5px solid var(--border)">
+            <span class="badge badge-teal" style="margin-bottom:.4rem;display:inline-block">Object becomes subject</span><br>
+            <strong style="color:var(--teal)">Competitions</strong> are organised (by teachers).<br>
+            <span style="font-size:.8rem;color:var(--text-muted)">Yarışmalar düzenlenir.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="formula">is / are + V3 (3rd form of verb)</div>
+
+    <div class="tip-box">
+      Always use <strong>V3 (third form)</strong> in Passive Voice. Use <strong>is</strong> for singular subjects, <strong>are</strong> for plural subjects.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><div class="ct-icon">📊</div> is vs are — Singular vs Plural</div>
+    <div style="overflow-x:auto;border-radius:var(--r);border:1.5px solid var(--border)">
+      <table class="compare-table">
+        <thead><tr><th>Active</th><th>Passive</th></tr></thead>
+        <tbody>
+          <tr><td><span class="active-badge">Active</span> Teachers clean the classroom.</td><td><span class="passive-badge">Passive</span> The classroom <strong>is cleaned</strong>.</td></tr>
+          <tr><td><span class="active-badge">Active</span> Students do experiments.</td><td><span class="passive-badge">Passive</span> Experiments <strong>are done</strong>.</td></tr>
+          <tr><td><span class="active-badge">Active</span> Teachers organise competitions.</td><td><span class="passive-badge">Passive</span> Competitions <strong>are organised</strong>.</td></tr>
+          <tr><td><span class="active-badge">Active</span> The Art Club shapes ideas.</td><td><span class="passive-badge">Passive</span> Ideas <strong>are shaped</strong>.</td></tr>
+          <tr><td><span class="active-badge">Active</span> Students sing songs.</td><td><span class="passive-badge">Passive</span> Songs <strong>are sung</strong>.</td></tr>
+          <tr><td><span class="active-badge">Active</span> They teach Maths.</td><td><span class="passive-badge">Passive</span> Maths <strong>is taught</strong>.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><div class="ct-icon">✨</div> More Passive Examples</div>
+    <div style="display:flex;flex-wrap:wrap;gap:.5rem">
+      <span class="badge badge-sky">Maths is taught.</span>
+      <span class="badge badge-sky">Problems are solved.</span>
+      <span class="badge badge-sky">Words are learned.</span>
+      <span class="badge badge-sky">Stories are read.</span>
+      <span class="badge badge-sky">Songs are sung.</span>
+      <span class="badge badge-sky">Games are played.</span>
+      <span class="badge badge-teal">The classroom is cleaned every morning.</span>
+      <span class="badge badge-teal">The swimming pool is used on Fridays.</span>
+      <span class="badge badge-teal">Sports events are organised by teachers.</span>
+      <span class="badge badge-teal">A new computer lab is being built.</span>
+      <span class="badge badge-teal">Responsibilities are shared.</span>
+      <span class="badge badge-teal">Projects are worked on.</span>
+    </div>
+    <div class="tip-box" style="margin-top:1rem">
+      <strong>Mini Reminder:</strong> Passive Voice = ✔ is / are + ✔ V3 (third form) + ✔ the doer is not important
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ VERB LIST ═══════ -->
+<div id="verbs" class="section">
+  <div class="section-hero">
+    <div class="hero-icon">🔠</div>
+    <div>
+      <h2>Verb List – V1 / V2 / V3</h2>
+      <p>Theme 9 verbs with Turkish meanings and passive examples</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="tip-box">
+      <strong>Regular verbs</strong> end in <strong>-ed</strong> (solve→solved, play→played). <strong>Irregular verbs</strong> change completely (teach→taught, sing→sung, write→written).
+    </div>
+    <div class="verb-table-wrap">
+      <table class="verb-table" id="verbTable"></table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ READING ═══════ -->
+<div id="reading" class="section">
+  <div class="section-hero">
+    <div class="hero-icon">📖</div>
+    <div>
+      <h2>Reading: A Busy Day at School</h2>
+      <p>Reading comprehension — Theme 9 School Life &amp; Education</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="reading-text">
+      Hello! My name is <strong>Kerem</strong>, and I am a student at an <strong>international school</strong>. Our school has many <strong>extracurricular activities</strong> and great <strong>facilities</strong>. There is a <strong>Science Club</strong>, a <strong>Chess Club</strong>, and a <strong>Drama Club</strong>. I am in the Science Club because I like doing <strong>experiments</strong>. New topics are <em>researched</em> every week, and projects are <em>prepared</em> by students. The classrooms are <em>cleaned</em> every morning, and the swimming pool is <em>used</em> on Fridays. <strong>Sports events</strong> are <em>organised</em> by the teachers. At the moment, some students are practising for the <strong>Spelling Bee</strong> competition. This term, we have joined different <strong>competitions</strong>, and we have been studying very hard for the exams. A new <strong>computer lab</strong> is being built at our school. I love my school because <strong>responsibilities</strong> are <em>shared</em>, and everyone works together.
+    </div>
+    <div class="vocab-box">
+      <div class="vocab-box-title">📌 Useful Words</div>
+      <div class="vocab-row"><span class="en">extracurricular activity</span><span class="tr">ders dışı etkinlik</span></div>
+      <div class="vocab-row"><span class="en">experiment</span><span class="tr">deney</span></div>
+      <div class="vocab-row"><span class="en">competition</span><span class="tr">yarışma</span></div>
+      <div class="vocab-row"><span class="en">responsibility</span><span class="tr">sorumluluk</span></div>
+      <div class="vocab-row"><span class="en">share</span><span class="tr">paylaşmak</span></div>
+      <div class="vocab-row"><span class="en">facility</span><span class="tr">imkân / tesis</span></div>
+    </div>
+  </div>
+
+  <div class="card" id="reading-quiz-container">
+    <div class="card-title"><div class="ct-icon">❓</div> Reading Comprehension Questions</div>
+    <div id="reading-questions"></div>
+  </div>
+</div>
+
+<!-- ═══════ GRAMMAR QUIZ ═══════ -->
+<div id="quiz1" class="section">
+  <div class="section-hero">
+    <div class="hero-icon">🧪</div>
+    <div>
+      <h2>Grammar Quiz</h2>
+      <p>Passive Voice — is / are + V3 multiple choice</p>
+    </div>
+  </div>
+  <div class="quiz-wrap">
+    <div class="quiz-meta">
+      <span class="qmeta-title">Passive Voice Quiz</span>
+      <div class="progress-bar-wrap"><div class="progress-bar" id="q1-progress" style="width:0%"></div></div>
+      <span class="score-badge" id="q1-score">0 / 0</span>
+    </div>
+    <div id="q1-container"></div>
+    <div class="result-screen" id="q1-result">
+      <div class="result-score-big" id="q1-result-score"></div>
+      <div class="verdict" id="q1-verdict"></div>
+      <div class="result-sub" id="q1-result-sub"></div>
+      <div class="result-actions">
+        <button class="btn btn-outline" onclick="resetQuiz('q1')">🔄 Try Again</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ FILL QUIZ ═══════ -->
+<div id="quiz2" class="section">
+  <div class="section-hero">
+    <div class="hero-icon">📝</div>
+    <div>
+      <h2>Fill in the Blanks</h2>
+      <p>Click a word from the bank, then click a blank to fill it</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><div class="ct-icon">A</div> Complete the sentences (is / are)</div>
+    <div class="fill-quiz" id="fq-isare"></div>
+    <button class="check-all-btn" onclick="checkFillIsAre()">✓ Check Answers</button>
+  </div>
+
+  <div class="card" style="margin-top:1.25rem">
+    <div class="card-title"><div class="ct-icon">B</div> Vocabulary Fill — Word Bank</div>
+    <div class="word-bank" id="wb-vocab"></div>
+    <div class="fill-quiz" id="fq-vocab"></div>
+    <button class="check-all-btn" onclick="checkFillVocab()">✓ Check Answers</button>
+  </div>
+</div>
+
+<!-- ═══════ ORDER QUIZ ═══════ -->
+<div id="order" class="section">
+  <div class="section-hero">
+    <div class="hero-icon">🔀</div>
+    <div>
+      <h2>Put in the Correct Order</h2>
+      <p>Click words to build the correct passive sentence</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="order-quiz" id="order-container"></div>
+    <button class="check-all-btn" onclick="checkOrder()">✓ Check All Sentences</button>
+  </div>
+</div>
+
+<!-- ═══════ VERB QUIZ ═══════ -->
+<div id="verbquiz" class="section">
+  <div class="section-hero">
+    <div class="hero-icon">⚡</div>
+    <div>
+      <h2>Verb Forms Practice</h2>
+      <p>Fill in the missing V2 and V3 forms — type your answers</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="vq-grid" id="verb-quiz-grid"></div>
+    <button class="check-all-btn" onclick="checkVerbQuiz()">✓ Check All Verbs</button>
+  </div>
+</div>
+
+<!-- ═══════ WORD QUIZ ═══════ -->
+<div id="wordquiz" class="section">
+  <div class="section-hero">
+    <div class="hero-icon">🎯</div>
+    <div>
+      <h2>Word Quiz — 50 Questions</h2>
+      <p>Choose the correct Turkish meaning for each English word</p>
+    </div>
+  </div>
+  <div class="quiz-wrap">
+    <div class="quiz-meta">
+      <span class="qmeta-title">Word Quiz</span>
+      <div class="progress-bar-wrap"><div class="progress-bar" id="wq-progress" style="width:0%"></div></div>
+      <span class="score-badge" id="wq-score">0 / 0</span>
+    </div>
+    <div id="wq-container"></div>
+    <div class="result-screen" id="wq-result">
+      <div class="result-score-big" id="wq-result-score"></div>
+      <div class="verdict" id="wq-verdict"></div>
+      <div class="result-sub" id="wq-result-sub"></div>
+      <div class="result-actions">
+        <button class="btn btn-outline" onclick="resetQuiz('wq')">🔄 Try Again</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+/* ═══════════════════════════════════════════
+   DATA
+═══════════════════════════════════════════ */
+const vocabGeneral = [
+  {en:'school',tr:'okul'},{en:'education',tr:'eğitim'},{en:'school life',tr:'okul hayatı'},
+  {en:'student',tr:'öğrenci'},{en:'teacher',tr:'öğretmen'},{en:'lesson',tr:'ders'},
+  {en:'subject',tr:'ders (alan)'},{en:'timetable',tr:'ders programı'},
+  {en:'diploma',tr:'diploma'},{en:'certificate',tr:'sertifika'},{en:'exam',tr:'sınav'},
+  {en:'competition',tr:'yarışma'},{en:'assignment',tr:'ödev'},{en:'project',tr:'proje'},
+  {en:'research',tr:'araştırma'},{en:'topic',tr:'konu'},{en:'routine',tr:'rutin'},
+  {en:'activity',tr:'etkinlik'},{en:'event',tr:'etkinlik'},{en:'responsibility',tr:'sorumluluk'},
+  {en:'facility',tr:'imkân / tesis'},{en:'skill',tr:'beceri'},{en:'foundation',tr:'temel'},
+  {en:'qualification',tr:'yeterlilik'},{en:'education programme',tr:'eğitim programı'},
+];
+const vocabPlaces = [
+  {en:'classroom',tr:'sınıf'},{en:'library',tr:'kütüphane'},{en:'laboratory',tr:'laboratuvar'},
+  {en:'science lab',tr:'fen laboratuvarı'},{en:'chemistry lab',tr:'kimya laboratuvarı'},
+  {en:'physics lab',tr:'fizik laboratuvarı'},{en:'technology lab',tr:'teknoloji laboratuvarı'},
+  {en:'gym',tr:'spor salonu'},{en:'basketball court',tr:'basketbol sahası'},
+  {en:'swimming pool',tr:'yüzme havuzu'},{en:'cafeteria',tr:'kantin'},
+  {en:'canteen',tr:'yemekhane'},{en:'courtyard',tr:'okul bahçesi'},
+  {en:'locker room',tr:'soyunma odası'},{en:'seminar room',tr:'seminer odası'},
+  {en:"teacher's room",tr:'öğretmenler odası'},{en:"headmaster's room",tr:'müdür odası'},
+  {en:"counsellor's office",tr:'rehberlik servisi'},
+];
+const vocabSchoolTypes = [
+  {en:'primary school',tr:'ilkokul'},{en:'lower secondary school',tr:'ortaokul'},
+  {en:'upper secondary school',tr:'lise'},{en:'vocational school',tr:'meslek okulu'},
+  {en:'international school',tr:'uluslararası okul'},{en:'language school',tr:'dil okulu'},
+  {en:'special needs school',tr:'özel eğitim okulu'},{en:'boarding school',tr:'yatılı okul'},
+  {en:'college',tr:'kolej / yüksekokul'},{en:'university',tr:'üniversite'},
+];
+const clubs = [
+  {name:'Science Club',tr:'Fen Kulübü',icon:'🔬'},
+  {name:'Art Club',tr:'Sanat Kulübü',icon:'🎨'},
+  {name:'Drama Club',tr:'Drama Kulübü',icon:'🎭'},
+  {name:'Theatre Club',tr:'Tiyatro Kulübü',icon:'🎪'},
+  {name:'Chess Club',tr:'Satranç Kulübü',icon:'♟️'},
+  {name:'Coding Club',tr:'Kodlama Kulübü',icon:'💻'},
+  {name:'Robotics Club',tr:'Robotik Kulübü',icon:'🤖'},
+  {name:'Debate Club',tr:'Münazara Kulübü',icon:'🗣️'},
+  {name:'Spelling Bee Club',tr:'Heceleme Yarışması Kulübü',icon:'🐝'},
+  {name:'History Club',tr:'Tarih Kulübü',icon:'🏛️'},
+  {name:'Music Club',tr:'Müzik Kulübü',icon:'🎵'},
+  {name:'Volunteer Club',tr:'Gönüllülük Kulübü',icon:'🤝'},
+  {name:'Sculpture Club',tr:'Heykel Kulübü',icon:'🗿'},
+];
+const subjects = [
+  {name:'English',tr:'İngilizce',cls:'sp-blue'},
+  {name:'Maths',tr:'Matematik',cls:'sp-green'},
+  {name:'Science',tr:'Fen Bilimleri',cls:'sp-teal'},
+  {name:'Biology',tr:'Biyoloji',cls:'sp-green'},
+  {name:'Chemistry',tr:'Kimya',cls:'sp-amber'},
+  {name:'Physics',tr:'Fizik',cls:'sp-purple'},
+  {name:'Geography',tr:'Coğrafya',cls:'sp-teal'},
+  {name:'History',tr:'Tarih',cls:'sp-amber'},
+  {name:'Literature',tr:'Edebiyat',cls:'sp-red'},
+  {name:'Music',tr:'Müzik',cls:'sp-purple'},
+  {name:'Art',tr:'Görsel Sanatlar',cls:'sp-red'},
+  {name:'PE',tr:'Beden Eğitimi',cls:'sp-green'},
+  {name:'Information Technology',tr:'Bilişim Teknolojileri',cls:'sp-blue'},
+  {name:'Religion and Morals',tr:'Din Kültürü ve Ahlak Bilgisi',cls:'sp-amber'},
+];
+const sportsArts = [
+  {en:'gymnastics',tr:'jimnastik'},{en:'rugby',tr:'ragbi'},{en:'football',tr:'futbol'},
+  {en:'basketball',tr:'basketbol'},{en:'tennis',tr:'tenis'},{en:'swimming',tr:'yüzme'},
+  {en:'skiing',tr:'kayak'},{en:'hiking',tr:'doğa yürüyüşü'},{en:'painting',tr:'resim yapma'},
+  {en:'sculpture',tr:'heykel'},{en:'exhibition',tr:'sergi'},{en:'photography',tr:'fotoğrafçılık'},
+  {en:'theatre',tr:'tiyatro'},{en:'drama',tr:'drama'},{en:'music',tr:'müzik'},
+];
+const academicVerbs = [
+  {en:'learn',tr:'öğrenmek'},{en:'teach',tr:'öğretmek'},{en:'study',tr:'ders çalışmak'},
+  {en:'practise',tr:'pratik yapmak'},{en:'prepare',tr:'hazırlanmak'},{en:'research',tr:'araştırmak'},
+  {en:'develop skills',tr:'beceri geliştirmek'},{en:'focus',tr:'odaklanmak'},
+  {en:'participate',tr:'katılmak'},{en:'organise',tr:'organize etmek'},
+  {en:'share',tr:'paylaşmak'},{en:'support',tr:'desteklemek'},{en:'graduate',tr:'mezun olmak'},
+];
+const verbList = [
+  {v1:'Teach',tr:'Öğretmek',v2:'Taught',v3:'Taught',type:'irregular',ex:'Maths is taught.'},
+  {v1:'Solve',tr:'Çözmek',v2:'Solved',v3:'Solved',type:'regular',ex:'Problems are solved.'},
+  {v1:'Learn',tr:'Öğrenmek',v2:'Learnt/Learned',v3:'Learnt/Learned',type:'regular',ex:'Words are learned.'},
+  {v1:'Read',tr:'Okumak',v2:'Read (red)',v3:'Read (red)',type:'irregular',ex:'Stories are read.'},
+  {v1:'Sing',tr:'Şarkı söylemek',v2:'Sang',v3:'Sung',type:'irregular',ex:'Songs are sung.'},
+  {v1:'Play',tr:'Oynamak',v2:'Played',v3:'Played',type:'regular',ex:'Games are played.'},
+  {v1:'Make',tr:'Yapmak',v2:'Made',v3:'Made',type:'irregular',ex:'Food is made.'},
+  {v1:'Meet',tr:'Buluşmak / Tanışmak',v2:'Met',v3:'Met',type:'irregular',ex:'Friends are met.'},
+  {v1:'Share',tr:'Paylaşmak',v2:'Shared',v3:'Shared',type:'regular',ex:'Moments are shared.'},
+  {v1:'Discover',tr:'Keşfetmek',v2:'Discovered',v3:'Discovered',type:'regular',ex:'Artistic side is discovered.'},
+  {v1:'Capture',tr:'Yakalamak / Kaydetmek',v2:'Captured',v3:'Captured',type:'regular',ex:'The world is captured.'},
+  {v1:'Offer',tr:'Sunmak / Teklif etmek',v2:'Offered',v3:'Offered',type:'regular',ex:'Activities are offered.'},
+  {v1:'Achieve',tr:'Başarmak / Elde etmek',v2:'Achieved',v3:'Achieved',type:'regular',ex:'Self-expression is achieved.'},
+  {v1:'Shape',tr:'Şekillendirmek',v2:'Shaped',v3:'Shaped',type:'regular',ex:'Ideas are shaped.'},
+  {v1:'Think',tr:'Düşünmek',v2:'Thought',v3:'Thought',type:'irregular',ex:'New ideas are thought about.'},
+  {v1:'Write',tr:'Yazmak',v2:'Wrote',v3:'Written',type:'irregular',ex:'A poem is written.'},
+  {v1:'Listen',tr:'Dinlemek',v2:'Listened',v3:'Listened',type:'regular',ex:'The podcast is listened to.'},
+  {v1:'Work',tr:'Çalışmak',v2:'Worked',v3:'Worked',type:'regular',ex:'Projects are worked on.'},
+  {v1:'Tidy',tr:'Düzenlemek / Toplamak',v2:'Tidied',v3:'Tidied',type:'regular',ex:'The classroom is tidied.'},
+  {v1:'Talk',tr:'Konuşmak',v2:'Talked',v3:'Talked',type:'regular',ex:''},
+  {v1:'Organise',tr:'Organize etmek',v2:'Organised',v3:'Organised',type:'regular',ex:'Events are organised.'},
+  {v1:'Prepare',tr:'Hazırlamak',v2:'Prepared',v3:'Prepared',type:'regular',ex:'Projects are prepared.'},
+  {v1:'Research',tr:'Araştırmak',v2:'Researched',v3:'Researched',type:'regular',ex:'Topics are researched.'},
+];
+const grammarQuestions = [
+  {q:'Maths ____ taught every day.',choices:['is','are','be','been'],ans:0,topic:'is/are'},
+  {q:'Games ____ played in the courtyard.',choices:['is','are','was','were'],ans:1,topic:'is/are'},
+  {q:'The classroom ____ cleaned every morning.',choices:['are','be','is','been'],ans:2,topic:'is/are'},
+  {q:'Songs ____ sung in Music class.',choices:['is','was','been','are'],ans:3,topic:'is/are'},
+  {q:'The library ____ cleaned every week.',choices:['are','been','be','is'],ans:3,topic:'is/are'},
+  {q:'Competitions ____ organised at our school.',choices:['is','be','are','was'],ans:2,topic:'is/are'},
+  {q:'A new computer lab ____ built every year.',choices:['are','were','been','is'],ans:3,topic:'is/are'},
+  {q:'The swimming pool ____ used on Fridays.',choices:['are','be','is','been'],ans:2,topic:'is/are'},
+  {q:'Teachers teach Maths. → Maths ____ taught.',choices:['are','be','been','is'],ans:3,topic:'Active→Passive'},
+  {q:'Students solve problems. → Problems ____ solved.',choices:['is','be','been','are'],ans:3,topic:'Active→Passive'},
+  {q:'The Art Club shapes ideas. → Ideas ____ shaped.',choices:['is','was','are','been'],ans:2,topic:'Active→Passive'},
+  {q:'Students sing songs. → Songs ____ sung.',choices:['is','was','been','are'],ans:3,topic:'Active→Passive'},
+  {q:'Which sentence uses Passive Voice correctly?',choices:['Teachers is clean the room.','The room are cleaned.','The room is cleaned.','The room cleans.'],ans:2,topic:'Identify'},
+  {q:'Food ____ made in the canteen.',choices:['are','be','is','were'],ans:2,topic:'is/are'},
+  {q:'Words ____ learned in English class.',choices:['is','was','be','are'],ans:3,topic:'is/are'},
+  {q:'Experiments ____ done in the lab.',choices:['is','was','be','are'],ans:3,topic:'is/are'},
+  {q:'A poem ____ written by the student.',choices:['are','been','is','be'],ans:2,topic:'is/are'},
+  {q:'Projects ____ worked on every week.',choices:['is','was','been','are'],ans:3,topic:'is/are'},
+  {q:'Responsibilities ____ shared at school.',choices:['is','was','been','are'],ans:3,topic:'is/are'},
+  {q:'The correct V3 of "sing" is:',choices:['singed','sang','sung','sings'],ans:2,topic:'V3 Form'},
+  {q:'The correct V3 of "teach" is:',choices:['teached','tought','taught','teaches'],ans:2,topic:'V3 Form'},
+  {q:'The correct V3 of "write" is:',choices:['writed','wrote','writes','written'],ans:3,topic:'V3 Form'},
+  {q:'The correct V3 of "make" is:',choices:['maked','made','makes','maked'],ans:1,topic:'V3 Form'},
+  {q:'The correct V3 of "think" is:',choices:['thinked','thought','thinks','thinkt'],ans:1,topic:'V3 Form'},
+];
+const readingQuestions = [
+  {q:'Why does Kerem like the Science Club?',choices:['Because he likes acting.','Because he likes doing experiments.','Because he likes swimming.','Because he likes music.'],ans:1},
+  {q:'What is organised by the teachers?',choices:['Homework','Sports events','Exams','Cleaning'],ans:1},
+  {q:'What is being built at the school?',choices:['A swimming pool','A theatre hall','A computer lab','A library'],ans:2},
+  {q:'What have students joined this term?',choices:['Different competitions','Drama lessons','A new school','A language course'],ans:0},
+  {q:'How are responsibilities at school?',choices:['They are ignored.','They are shared.','They are cancelled.','They are postponed.'],ans:1},
+];
+const fillIsAre = [
+  {sentence:'The classroom ____ cleaned every morning.',ans:'is'},
+  {sentence:'Games ____ played after school.',ans:'are'},
+  {sentence:'Food ____ made in the canteen.',ans:'is'},
+  {sentence:'Words ____ learned in English class.',ans:'are'},
+  {sentence:'Songs ____ sung in Music class.',ans:'are'},
+  {sentence:'The library ____ cleaned every week.',ans:'is'},
+  {sentence:'Competitions ____ organised at our school.',ans:'are'},
+  {sentence:'The swimming pool ____ used on Fridays.',ans:'is'},
+];
+const fillVocab = [
+  {sentence:'Our school has modern ____ such as a science lab and a swimming pool.',ans:'facilities'},
+  {sentence:'Students can go to a ____ if they want to learn practical skills.',ans:'vocational school'},
+  {sentence:'After upper secondary school, many students attend ____ to get a degree.',ans:'university'},
+  {sentence:'Pelin is preparing for a spelling bee ____ next week.',ans:'competition'},
+  {sentence:'Students do ____ in the Science Club to learn new topics.',ans:'research'},
+  {sentence:'When you finish the course, you receive a ____.',ans:'diploma'},
+  {sentence:'My sister wants to ____ from college this year.',ans:'graduate'},
+  {sentence:'An ____ is prepared for students in every stage of learning.',ans:'educational programme'},
+  {sentence:'In a ____, students stay at school during the week.',ans:'boarding school'},
+];
+const fillVocabBank = ['facilities','vocational school','university','competition','research','diploma','graduate','educational programme','boarding school','responsibility'];
+const orderSentences = [
+  {words:['competitions','are','organised','by','the','teachers','every','term'],ans:'Competitions are organised by the teachers every term.'},
+  {words:['the','swimming','pool','is','cleaned','every','morning'],ans:'The swimming pool is cleaned every morning.'},
+  {words:['experiments','are','done','in','the','science','lab','every','week'],ans:'Experiments are done in the science lab every week.'},
+  {words:['a','new','computer','lab','is','being','built','at','our','school'],ans:'A new computer lab is being built at our school.'},
+  {words:['songs','are','sung','in','Music','class'],ans:'Songs are sung in Music class.'},
+  {words:['Maths','is','taught','every','day'],ans:'Maths is taught every day.'},
+  {words:['projects','are','prepared','by','students','every','term'],ans:'Projects are prepared by students every term.'},
+];
+const wordQuizData = [
+  {word:'school',choices:['okul','öğrenci','ders','sınıf'],ans:0},
+  {word:'student',choices:['öğretmen','öğrenci','okul','sınav'],ans:1},
+  {word:'teacher',choices:['öğrenci','ders','öğretmen','sınıf'],ans:2},
+  {word:'classroom',choices:['kütüphane','sınıf','laboratuvar','kantin'],ans:1},
+  {word:'library',choices:['spor salonu','kantin','sınıf','kütüphane'],ans:3},
+  {word:'laboratory',choices:['sınıf','kütüphane','laboratuvar','bahçe'],ans:2},
+  {word:'subject',choices:['ders','sınav','proje','kulüp'],ans:0},
+  {word:'timetable',choices:['ders','program','sınav','okul'],ans:1},
+  {word:'exam',choices:['proje','sınav','ders','kulüp'],ans:1},
+  {word:'project',choices:['yarışma','sınav','proje','ders'],ans:2},
+  {word:'club',choices:['ders','kulüp','okul','öğretmen'],ans:1},
+  {word:'Science Club',choices:['Fen Kulübü','Satranç Kulübü','Sanat Kulübü','Drama Kulübü'],ans:0},
+  {word:'Art Club',choices:['Fen Kulübü','Sanat Kulübü','Kodlama Kulübü','Müzik Kulübü'],ans:1},
+  {word:'Chess Club',choices:['Kodlama Kulübü','Drama Kulübü','Satranç Kulübü','Fen Kulübü'],ans:2},
+  {word:'Music Club',choices:['Resim Kulübü','Satranç Kulübü','Fen Kulübü','Müzik Kulübü'],ans:3},
+  {word:'gym',choices:['kütüphane','spor salonu','sınıf','laboratuvar'],ans:1},
+  {word:'basketball court',choices:['yüzme havuzu','spor salonu','basketbol sahası','kantin'],ans:2},
+  {word:'swimming pool',choices:['yüzme havuzu','bahçe','spor salonu','sınıf'],ans:0},
+  {word:'cafeteria',choices:['kantin','sınıf','kütüphane','laboratuvar'],ans:0},
+  {word:'canteen',choices:['bahçe','sınıf','kantin','spor salonu'],ans:2},
+  {word:"headmaster's room",choices:['müdür odası','öğretmenler odası','sınıf','laboratuvar'],ans:0},
+  {word:"counsellor's office",choices:['öğretmenler odası','rehberlik servisi','sınıf','kantin'],ans:1},
+  {word:'competition',choices:['proje','sınav','yarışma','ders'],ans:2},
+  {word:'assignment',choices:['yarışma','proje','ödev','sınav'],ans:2},
+  {word:'certificate',choices:['diploma','sertifika','sınav','ders'],ans:1},
+  {word:'education',choices:['ders','okul','eğitim','sınav'],ans:2},
+  {word:'facility',choices:['kulüp','imkân','ders','öğretmen'],ans:1},
+  {word:'extracurricular activities',choices:['dersler','sınavlar','ödevler','ders dışı etkinlikler'],ans:3},
+  {word:'lesson',choices:['kulüp','öğretmen','ders','program'],ans:2},
+  {word:'Literature',choices:['Beden Eğitimi','Fen','Edebiyat','Matematik'],ans:2},
+  {word:'History',choices:['Tarih','Coğrafya','Fen','Müzik'],ans:0},
+  {word:'Geography',choices:['Fen','Coğrafya','Tarih','İngilizce'],ans:1},
+  {word:'Biology',choices:['Biyoloji','Kimya','Fizik','Matematik'],ans:0},
+  {word:'Chemistry',choices:['Fizik','Kimya','Biyoloji','Tarih'],ans:1},
+  {word:'Physics',choices:['Matematik','Biyoloji','Kimya','Fizik'],ans:3},
+  {word:'English',choices:['İngilizce','Matematik','Fen','Müzik'],ans:0},
+  {word:'Maths',choices:['Fen','Müzik','İngilizce','Matematik'],ans:3},
+  {word:'PE',choices:['Müzik','Beden Eğitimi','Fen','Matematik'],ans:1},
+  {word:'Information Technology',choices:['Fen','Matematik','Bilişim Teknolojileri','İngilizce'],ans:2},
+  {word:'event',choices:['ders','etkinlik','ödev','kulüp'],ans:1},
+  {word:'research',choices:['deney','araştırma','proje','sınav'],ans:1},
+  {word:'experiment',choices:['deney','araştırma','ders','sınav'],ans:0},
+  {word:'technology lab',choices:['spor salonu','laboratuvar','teknoloji laboratuvarı','kütüphane'],ans:2},
+  {word:'locker room',choices:['sınıf','soyunma odası','kantin','bahçe'],ans:1},
+  {word:'courtyard',choices:['bahçe','sınıf','laboratuvar','spor salonu'],ans:0},
+  {word:'seminar room',choices:['sınıf','seminer odası','öğretmenler odası','kütüphane'],ans:1},
+  {word:"teacher's room",choices:['rehberlik servisi','öğretmenler odası','sınıf','müdür odası'],ans:1},
+  {word:'boarding school',choices:['özel okul','meslek okulu','dil okulu','yatılı okul'],ans:3},
+  {word:'vocational school',choices:['dil okulu','meslek okulu','lise','üniversite'],ans:1},
+  {word:'international school',choices:['özel okul','uluslararası okul','yatılı okul','meslek okulu'],ans:1},
+];
+
+/* ═══════════════════════════════════════════
+   RENDER VOCABULARY
+═══════════════════════════════════════════ */
+function renderVocabGrid(containerId, data, cat) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = data.map(item => `
+    <div class="vocab-item" onclick="this.style.background=this.style.background==='' ? 'var(--sky-2)' : ''">
+      ${cat ? `<span class="cat-tag">${cat}</span>` : ''}
+      <div class="en">${item.en}</div>
+      <div class="tr">${item.tr}</div>
+    </div>`).join('');
+}
+function renderClubs() {
+  document.getElementById('clubs-grid').innerHTML = clubs.map(c => `
+    <div class="club-card">
+      <div class="club-icon">${c.icon}</div>
+      <div class="club-name">${c.name}</div>
+      <div class="club-tr">${c.tr}</div>
+    </div>`).join('');
+}
+function renderSubjects() {
+  document.getElementById('subjects-grid').innerHTML = subjects.map(s => `
+    <div class="subject-pill ${s.cls}">
+      <span>📌</span><span><strong>${s.name}</strong> — ${s.tr}</span>
+    </div>`).join('');
+}
+function renderVerbTable() {
+  const t = document.getElementById('verbTable');
+  t.innerHTML = `<thead><tr>
+    <th>V1 (Base)</th><th>Turkish</th><th>V2 (Past)</th><th>V3 (Passive)</th><th>Type</th><th>Example</th>
+  </tr></thead><tbody>${verbList.map(v=>`
+    <tr>
+      <td class="v1">${v.v1}</td>
+      <td style="color:var(--text-sec);font-weight:600">${v.tr}</td>
+      <td style="font-weight:700;color:var(--text)">${v.v2}</td>
+      <td style="font-weight:800;color:var(--teal)">${v.v3}</td>
+      <td><span class="${v.type==='irregular'?'irregular-tag':'regular-tag'}">${v.type}</span></td>
+      <td class="example">${v.ex||'—'}</td>
+    </tr>`).join('')}</tbody>`;
+}
+
+/* ═══════════════════════════════════════════
+   TAB NAVIGATION
+═══════════════════════════════════════════ */
+function showSection(id, btn) {
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ═══════════════════════════════════════════
+   QUIZ ENGINE
+═══════════════════════════════════════════ */
+const quizState = {};
+function initQuiz(prefix, questions) {
+  quizState[prefix] = {q: questions, idx: 0, score: 0, answered: new Array(questions.length).fill(false)};
+  renderQuizQuestion(prefix);
+}
+function renderQuizQuestion(prefix) {
+  const s = quizState[prefix];
+  const container = document.getElementById(prefix+'-container');
+  const resultEl = document.getElementById(prefix+'-result');
+  if(!container) return;
+  if(s.idx >= s.q.length) { showResult(prefix); return; }
+  resultEl.classList.remove('show');
+  container.style.display = 'block';
+  const q = s.q[s.idx];
+  const letters = ['A','B','C','D'];
+  container.innerHTML = `
+    <div class="q-card">
+      <div class="q-header">
+        <span class="q-num-pill">Q${s.idx+1} / ${s.q.length}</span>
+        ${q.topic ? `<span class="q-topic-pill">${q.topic}</span>` : ''}
+      </div>
+      <div class="q-text">${q.q}</div>
+      <div class="choices">
+        ${q.choices.map((c,i)=>`
+          <button class="choice-btn" onclick="answerQuiz('${prefix}',${i})" data-idx="${i}">
+            <span class="choice-letter">${letters[i]}</span>
+            <span class="choice-text">${c}</span>
+          </button>`).join('')}
+      </div>
+      <div class="feedback-box" id="${prefix}-feedback"></div>
+    </div>
+    <div class="quiz-nav">
+      <span style="font-size:.85rem;color:var(--text-muted);font-weight:600">Score: ${s.score} correct</span>
+      ${s.idx < s.q.length-1 ? `<button class="btn btn-primary" id="${prefix}-next" onclick="nextQuestion('${prefix}')" style="display:none">Next →</button>` : `<button class="btn btn-success" id="${prefix}-next" onclick="nextQuestion('${prefix}')" style="display:none">See Results 🎉</button>`}
+    </div>`;
+  updateProgress(prefix);
+}
+function answerQuiz(prefix, chosen) {
+  const s = quizState[prefix];
+  const q = s.q[s.idx];
+  const btns = document.querySelectorAll(`#${prefix}-container .choice-btn`);
+  const fb = document.getElementById(prefix+'-feedback');
+  btns.forEach(b=>b.disabled=true);
+  const correct = chosen === q.ans;
+  if(correct) {
+    btns[chosen].classList.add('correct');
+    s.score++;
+    fb.className='feedback-box correct';
+    fb.style.display='block';
+    fb.textContent='✓ Correct! Well done!';
+  } else {
+    btns[chosen].classList.add('wrong');
+    btns[q.ans].classList.add('reveal');
+    fb.className='feedback-box wrong';
+    fb.style.display='block';
+    fb.textContent=`✗ Not quite. The correct answer is: "${q.choices[q.ans]}"`;
+  }
+  const nextBtn = document.getElementById(prefix+'-next');
+  if(nextBtn) nextBtn.style.display='flex';
+  updateProgress(prefix);
+  document.getElementById(prefix+'-score').textContent = s.score + ' / ' + (s.idx+1);
+}
+function nextQuestion(prefix) {
+  quizState[prefix].idx++;
+  renderQuizQuestion(prefix);
+}
+function updateProgress(prefix) {
+  const s = quizState[prefix];
+  const pct = ((s.idx) / s.q.length * 100);
+  const bar = document.getElementById(prefix+'-progress');
+  if(bar) bar.style.width = pct + '%';
+}
+function showResult(prefix) {
+  const s = quizState[prefix];
+  const container = document.getElementById(prefix+'-container');
+  const resultEl = document.getElementById(prefix+'-result');
+  if(container) container.style.display='none';
+  const pct = Math.round(s.score/s.q.length*100);
+  const pass = pct >= 60;
+  document.getElementById(prefix+'-result-score').textContent = pct + '%';
+  document.getElementById(prefix+'-result-score').className = 'result-score-big ' + (pass?'score-pass':'score-fail');
+  document.getElementById(prefix+'-verdict').textContent = pass ? '🎉 Congratulations! Great job!' : '📚 Keep practising — you can do it!';
+  document.getElementById(prefix+'-result-sub').textContent = `${s.score} out of ${s.q.length} correct`;
+  document.getElementById(prefix+'-progress').style.width='100%';
+  document.getElementById(prefix+'-score').textContent = s.score + ' / ' + s.q.length;
+  resultEl.classList.add('show');
+}
+function resetQuiz(prefix) {
+  const s = quizState[prefix];
+  const container = document.getElementById(prefix+'-container');
+  const resultEl = document.getElementById(prefix+'-result');
+  resultEl.classList.remove('show');
+  if(container) container.style.display='block';
+  const questions = s.q;
+  quizState[prefix] = {q: questions, idx: 0, score: 0, answered: new Array(questions.length).fill(false)};
+  document.getElementById(prefix+'-score').textContent='0 / 0';
+  document.getElementById(prefix+'-progress').style.width='0%';
+  renderQuizQuestion(prefix);
+}
+
+/* ═══════════════════════════════════════════
+   READING COMPREHENSION QUIZ
+═══════════════════════════════════════════ */
+function renderReadingQuiz() {
+  const letters = ['a','b','c','d'];
+  document.getElementById('reading-questions').innerHTML = readingQuestions.map((q,qi)=>`
+    <div style="margin-bottom:1.25rem;padding-bottom:1.25rem;border-bottom:1px solid var(--border)">
+      <div style="font-weight:700;font-size:.95rem;margin-bottom:.7rem;color:var(--text)">${qi+1}. ${q.q}</div>
+      <div style="display:flex;flex-direction:column;gap:.4rem">
+        ${q.choices.map((c,ci)=>`
+          <button class="choice-btn" onclick="checkReading(${qi},${ci},this)" data-qi="${qi}" data-ci="${ci}" style="font-size:.88rem">
+            <span class="choice-letter">${letters[ci]}</span>
+            <span class="choice-text">${c}</span>
+          </button>`).join('')}
+      </div>
+    </div>`).join('');
+}
+function checkReading(qi, ci, btn) {
+  const q = readingQuestions[qi];
+  const allBtns = document.querySelectorAll(`[data-qi="${qi}"]`);
+  allBtns.forEach(b=>b.disabled=true);
+  if(ci === q.ans) { btn.classList.add('correct'); }
+  else { btn.classList.add('wrong'); allBtns[q.ans].classList.add('reveal'); }
+}
+
+/* ═══════════════════════════════════════════
+   FILL IN THE BLANKS
+═══════════════════════════════════════════ */
+function renderFillIsAre() {
+  const el = document.getElementById('fq-isare');
+  el.innerHTML = fillIsAre.map((item,i)=>{
+    const parts = item.sentence.split('____');
+    return `<div class="fq-item">
+      <span class="fq-num">${i+1}</span>
+      <span>${parts[0]}<span class="fill-blank" id="blank-isare-${i}" data-ans="${item.ans}" data-options='["is","are"]' onclick="cycleFill(this)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>${parts[1]}</span>
+    </div>`;
+  }).join('');
+}
+function cycleFill(el) {
+  const opts = JSON.parse(el.dataset.options);
+  const cur = el.dataset.current ? parseInt(el.dataset.current) : -1;
+  const next = (cur + 1) % opts.length;
+  el.dataset.current = next;
+  el.textContent = opts[next];
+  el.classList.remove('filled','wrong-fill');
+  el.classList.add('filled');
+}
+function checkFillIsAre() {
+  fillIsAre.forEach((item,i) => {
+    const el = document.getElementById(`blank-isare-${i}`);
+    const val = el.textContent.trim().toLowerCase();
+    el.classList.remove('filled','wrong-fill');
+    if(val === item.ans) el.classList.add('filled');
+    else { el.classList.add('wrong-fill'); el.textContent = item.ans; }
+  });
+}
+
+let selectedWord = null;
+function renderFillVocab() {
+  const wb = document.getElementById('wb-vocab');
+  wb.innerHTML = fillVocabBank.map(w=>`<span class="word-chip" id="chip-${w.replace(/ /g,'_')}" onclick="selectWord('${w.replace(/ /g,'_')}')">${w}</span>`).join('');
+  const fq = document.getElementById('fq-vocab');
+  fq.innerHTML = fillVocab.map((item,i)=>{
+    const parts = item.sentence.split('____');
+    return `<div class="fq-item">
+      <span class="fq-num">${i+1}</span>
+      <span>${parts[0]}<span class="fill-blank" id="blank-vocab-${i}" data-ans="${item.ans}" onclick="placeWord(this)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>${parts[1]}</span>
+    </div>`;
+  }).join('');
+}
+function selectWord(w) {
+  document.querySelectorAll('.word-chip').forEach(c=>c.style.background='');
+  selectedWord = w;
+  const chip = document.getElementById('chip-'+w);
+  if(chip && !chip.classList.contains('used')) {
+    chip.style.background='var(--sky)';
+    chip.style.color='#fff';
+  }
+}
+function placeWord(el) {
+  if(!selectedWord) return;
+  const prev = el.dataset.placed;
+  if(prev) {
+    const prevChip = document.getElementById('chip-'+prev.replace(/ /g,'_'));
+    if(prevChip) prevChip.classList.remove('used');
+  }
+  el.textContent = selectedWord.replace(/_/g,' ');
+  el.dataset.placed = selectedWord.replace(/_/g,' ');
+  el.classList.remove('wrong-fill');
+  el.classList.add('filled');
+  const chip = document.getElementById('chip-'+selectedWord);
+  if(chip) { chip.classList.add('used'); chip.style.background=''; chip.style.color=''; }
+  selectedWord = null;
+  document.querySelectorAll('.word-chip').forEach(c=>{ c.style.background=''; c.style.color=''; });
+}
+function checkFillVocab() {
+  fillVocab.forEach((item,i)=>{
+    const el = document.getElementById(`blank-vocab-${i}`);
+    const val = (el.dataset.placed||'').trim().toLowerCase();
+    el.classList.remove('filled','wrong-fill');
+    if(val === item.ans.toLowerCase()) el.classList.add('filled');
+    else { el.classList.add('wrong-fill'); el.textContent=item.ans; }
+  });
+}
+
+/* ═══════════════════════════════════════════
+   SENTENCE ORDER
+═══════════════════════════════════════════ */
+function renderOrder() {
+  const container = document.getElementById('order-container');
+  container.innerHTML = orderSentences.map((item,si)=>{
+    const shuffled = [...item.words].sort(()=>Math.random()-.5);
+    return `<div class="oq-item">
+      <div style="font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--sky);margin-bottom:.5rem">Sentence ${si+1}</div>
+      <div class="word-tokens" id="bank-${si}">${shuffled.map(w=>`<span class="token" onclick="moveToAnswer(${si},'${w}',this)">${w}</span>`).join('')}</div>
+      <div style="font-size:.75rem;color:var(--text-muted);margin:.3rem 0 .3rem;font-weight:600">Your answer:</div>
+      <div class="answer-zone" id="answer-${si}" data-ans="${item.ans}"></div>
+      <div id="oq-check-${si}" style="display:none;margin-top:.35rem;font-size:.82rem;font-weight:700;padding:.35rem .75rem;border-radius:8px"></div>
+    </div>`;
+  }).join('');
+}
+function moveToAnswer(si, word, tokenEl) {
+  const zone = document.getElementById('answer-'+si);
+  if(tokenEl.parentElement.id === 'bank-'+si) {
+    tokenEl.remove();
+    const t = document.createElement('span');
+    t.className='token';t.textContent=word;
+    t.onclick=()=>moveToBank(si,word,t);
+    zone.appendChild(t);
+    zone.classList.add('has-answer');
+  }
+}
+function moveToBank(si, word, tokenEl) {
+  const bank = document.getElementById('bank-'+si);
+  tokenEl.remove();
+  const t = document.createElement('span');
+  t.className='token';t.textContent=word;
+  t.onclick=()=>moveToAnswer(si,word,t);
+  bank.appendChild(t);
+}
+function checkOrder() {
+  orderSentences.forEach((item,si)=>{
+    const zone = document.getElementById('answer-'+si);
+    const tokens = zone.querySelectorAll('.token');
+    const answer = [...tokens].map(t=>t.textContent).join(' ');
+    const checkEl = document.getElementById('oq-check-'+si);
+    checkEl.style.display='inline-block';
+    const normalise = s => s.toLowerCase().replace(/[.,!?]/g,'').trim();
+    if(normalise(answer) === normalise(item.ans)) {
+      checkEl.style.background='var(--green-lt)';checkEl.style.color='var(--green-d)';
+      checkEl.textContent='✓ Correct!';
+    } else {
+      checkEl.style.background='var(--red-lt)';checkEl.style.color='var(--red-d)';
+      checkEl.textContent='✗ Correct answer: '+item.ans;
+    }
+  });
+}
+
+/* ═══════════════════════════════════════════
+   VERB QUIZ
+═══════════════════════════════════════════ */
+const verbQuizItems = verbList.filter(v=>v.v1 && v.v2 && v.v3);
+function renderVerbQuiz() {
+  const grid = document.getElementById('verb-quiz-grid');
+  grid.innerHTML = verbQuizItems.map((v,i)=>`
+    <div class="vq-card" id="vqc-${i}">
+      <div class="vq-en">${v.v1}</div>
+      <div class="vq-tr">${v.tr}</div>
+      <div class="vq-row"><span class="vq-label">V2</span><input id="vq-v2-${i}" placeholder="past form..." autocomplete="off" spellcheck="false"></div>
+      <div class="vq-row"><span class="vq-label">V3</span><input id="vq-v3-${i}" placeholder="past participle..." autocomplete="off" spellcheck="false"></div>
+    </div>`).join('');
+}
+function checkVerbQuiz() {
+  let correct=0, total=0;
+  verbQuizItems.forEach((v,i)=>{
+    const v2el = document.getElementById('vq-v2-'+i);
+    const v3el = document.getElementById('vq-v3-'+i);
+    const v2ok = v2el.value.trim().toLowerCase().replace(/\//g,' ').split(' ').some(x=>v.v2.toLowerCase().replace(/\(.*?\)/g,'').split('/').map(s=>s.trim()).includes(x));
+    const v3ok = v3el.value.trim().toLowerCase().replace(/\//g,' ').split(' ').some(x=>v.v3.toLowerCase().replace(/\(.*?\)/g,'').split('/').map(s=>s.trim()).includes(x));
+    v2el.className = v2ok ? 'v-correct' : 'v-wrong';
+    v3el.className = v3ok ? 'v-correct' : 'v-wrong';
+    if(!v2ok) v2el.placeholder = v.v2;
+    if(!v3ok) v3el.placeholder = v.v3;
+    if(v2ok) correct++; total++;
+    if(v3ok) correct++; total++;
+  });
+  const pct = Math.round(correct/total*100);
+  const msg = document.createElement('div');
+  msg.style.cssText='background:var(--sky-lt);border:1.5px solid var(--sky-2);border-radius:var(--r);padding:1rem;margin-top:1rem;font-weight:700;color:var(--sky-d);font-size:.95rem;text-align:center';
+  msg.innerHTML = `Result: <strong>${correct}/${total}</strong> correct forms (${pct}%) ${pct>=70?'🎉 Great!':'📚 Keep practising!'}`;
+  const btn = document.querySelector('#verbquiz .check-all-btn');
+  const old = document.getElementById('vq-result-msg');
+  if(old) old.remove();
+  msg.id='vq-result-msg';
+  btn.insertAdjacentElement('afterend',msg);
+}
+
+/* ═══════════════════════════════════════════
+   SCROLL TOP
+═══════════════════════════════════════════ */
+window.addEventListener('scroll',()=>{
+  const st = document.getElementById('scrollTop');
+  if(window.scrollY > 300) st.classList.add('show');
+  else st.classList.remove('show');
+});
+
+/* ═══════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded',()=>{
+  renderVocabGrid('vg-general', vocabGeneral);
+  renderVocabGrid('vg-places', vocabPlaces);
+  renderVocabGrid('vg-schools', vocabSchoolTypes);
+  renderClubs();
+  renderSubjects();
+  renderVocabGrid('vg-sports', sportsArts);
+  renderVocabGrid('vg-verbs', academicVerbs);
+  renderVerbTable();
+  renderReadingQuiz();
+  renderFillIsAre();
+  renderFillVocab();
+  renderOrder();
+  renderVerbQuiz();
+  initQuiz('q1', [...grammarQuestions].sort(()=>Math.random()-.5));
+  initQuiz('wq', [...wordQuizData].sort(()=>Math.random()-.5));
+});
+</script>
+</body>
+</html>
