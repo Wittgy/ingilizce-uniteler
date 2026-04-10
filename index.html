@@ -94,6 +94,42 @@
     }
 }
 
+/* menü ek ayarlar  */
+
+.main-tabs {
+    display: flex;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    gap: 8px;
+    padding: 10px;
+    justify-content: flex-start;
+
+    scrollbar-width: none;
+}
+
+.main-tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.main-tab-btn {
+    flex: 0 0 auto;
+    padding: 10px 16px;
+    font-size: 13px;
+    white-space: nowrap;
+}
+/*Hafif “fade” efekti*/
+.main-tabs::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 30px;
+    background: linear-gradient(to left, #0f0f1a, transparent);
+    pointer-events: none;
+}
+
+        
     </style>
 </head>
 <body>
